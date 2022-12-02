@@ -13,6 +13,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="DockerUbuntuVirtual" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.mysql:mysql-connector-j:8.0.31" />
+          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.19.4" />
+          <element id="library" level="project" name="Maven: org.sql2o:sql2o:1.6.0" />
+        </element>
       </element>
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/DockerUbuntuVirtual-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
