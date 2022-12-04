@@ -6,12 +6,10 @@ import java.security.PublicKey;
 public class SSHKey {
     int id;
     String nameKey;
-    PublicKey publicKey;
 
-    public SSHKey(int id, String nameKey, PublicKey publicKey) {
+    public SSHKey(int id, String nameKey) {
         this.id = id;
         this.nameKey = nameKey;
-        this.publicKey = publicKey;
     }
 
     public int getId() {
@@ -30,12 +28,6 @@ public class SSHKey {
         this.nameKey = nameKey;
     }
 
-    public PublicKey getPublicKey() {
-        return publicKey;
-    }
 
-    public void setPublicKey(PublicKey publicKey) {
-        this.publicKey = publicKey;
-    }
 }
 

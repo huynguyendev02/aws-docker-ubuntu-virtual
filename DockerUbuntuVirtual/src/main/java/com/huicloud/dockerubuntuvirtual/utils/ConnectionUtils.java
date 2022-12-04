@@ -8,5 +8,6 @@ public class ConnectionUtils {
     static Sql2o sql2o = new Sql2o("jdbc:mysql://localhost:3306/"+ Config.databaseName, Config.usernameDB,Config.passwordDB);
     public static Connection openConnection(){
         return sql2o.open();
+
     }
 }

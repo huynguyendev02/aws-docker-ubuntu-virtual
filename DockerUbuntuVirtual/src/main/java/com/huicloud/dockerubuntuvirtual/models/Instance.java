@@ -3,21 +3,21 @@ package com.huicloud.dockerubuntuvirtual.models;
 public class Instance {
     int id;
     String nameInstance;
-    float cpus;
-    float memory;
-    String ipSSH;
+    double cpus;
+    double memory;
+    int port;
     int networkId;
     int userId;
     int imageId;
     String state;
     int keyId;
 
-    public Instance(int id, String nameInstance, float cpus, float memory, String ipSSH, int networkId, int userId, int imageId, String state, int keyId) {
+    public Instance(int id, String nameInstance, double cpus, double memory, int port, int networkId, int userId, int imageId, String state, int keyId) {
         this.id = id;
         this.nameInstance = nameInstance;
         this.cpus = cpus;
         this.memory = memory;
-        this.ipSSH = ipSSH;
+        this.port = port;
         this.networkId = networkId;
         this.userId = userId;
         this.imageId = imageId;
@@ -41,28 +41,28 @@ public class Instance {
         this.nameInstance = nameInstance;
     }
 
-    public float getCpus() {
+    public double getCpus() {
         return cpus;
     }
 
-    public void setCpus(float cpus) {
+    public void setCpus(double cpus) {
         this.cpus = cpus;
     }
 
-    public float getMemory() {
+    public double getMemory() {
         return memory;
     }
 
-    public void setMemory(float memory) {
+    public void setMemory(double memory) {
         this.memory = memory;
     }
 
-    public String getIpSSH() {
-        return ipSSH;
+    public int getport() {
+        return port;
     }
 
-    public void setIpSSH(String ipSSH) {
-        this.ipSSH = ipSSH;
+    public void setport(int port) {
+        this.port = port;
     }
 
     public int getNetworkId() {

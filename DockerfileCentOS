@@ -1,0 +1,16 @@
+FROM centos:latest
+
+RUN cd /etc/yum.repos.d/
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+
+RUN yum update -y && yum install openssh-server sudo -y
+RUN groupadd sshgroup && useradd -ms /bin/bash -g sshgroup sshuser
+RUN mkdir -p /home/sshuser/.ssh
+RUN touch /home/sshuser/.ssh/authorized_keys
+RUN chown sshuser:sshgroup /home/sshuser/.ssh/authorized_keys && chmod 600 /home/sshuser/.ssh/authorized_keys
+
+EXPOSE 22
+
+CMD /bin/bash
