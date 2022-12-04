@@ -1,10 +1,18 @@
 package com.huicloud.dockerubuntuvirtual.models;
 
+import java.security.KeyPairGenerator;
+import java.security.PublicKey;
+
 public class SSHKey {
     int id;
     String nameKey;
-    byte[] publicKey;
-    int userId;
+    PublicKey publicKey;
+
+    public SSHKey(int id, String nameKey, PublicKey publicKey) {
+        this.id = id;
+        this.nameKey = nameKey;
+        this.publicKey = publicKey;
+    }
 
     public int getId() {
         return id;
@@ -22,26 +30,12 @@ public class SSHKey {
         this.nameKey = nameKey;
     }
 
-    public byte[] getPublicKey() {
+    public PublicKey getPublicKey() {
         return publicKey;
     }
 
-    public void setPublicKey(byte[] publicKey) {
+    public void setPublicKey(PublicKey publicKey) {
         this.publicKey = publicKey;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public SSHKey(int id, String nameKey, byte[] publicKey, int userId) {
-        this.id = id;
-        this.nameKey = nameKey;
-        this.publicKey = publicKey;
-        this.userId = userId;
     }
 }
+

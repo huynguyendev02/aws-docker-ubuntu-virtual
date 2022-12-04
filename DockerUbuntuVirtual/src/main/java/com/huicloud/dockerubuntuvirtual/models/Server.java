@@ -4,6 +4,11 @@ public class Server {
     int id;
     String ipServer;
 
+    public Server(int id, String ipServer) {
+        this.id = id;
+        this.ipServer = ipServer;
+    }
+
     public int getId() {
         return id;
     }
@@ -17,14 +22,6 @@ public class Server {
     }
 
     public void setIpServer(String ipServer) {
-        this.ipServer = ipServer;
-    }
-
-    public Server() {
-    }
-
-    public Server(int id, String ipServer) {
-        this.id = id;
         this.ipServer = ipServer;
     }
 }

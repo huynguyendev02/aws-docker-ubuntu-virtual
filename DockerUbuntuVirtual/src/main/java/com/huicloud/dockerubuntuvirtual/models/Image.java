@@ -4,11 +4,8 @@ public class Image {
     int id;
     String nameImage;
 
-    public String getNameImage() {
-        return nameImage;
-    }
-
-    public void setNameImage(String nameImage) {
+    public Image(int id, String nameImage) {
+        this.id = id;
         this.nameImage = nameImage;
     }
 
@@ -20,11 +17,11 @@ public class Image {
         this.id = id;
     }
 
-    public Image() {
+    public String getNameImage() {
+        return nameImage;
     }
 
-    public Image(int id, String nameImage) {
-        this.id = id;
+    public void setNameImage(String nameImage) {
         this.nameImage = nameImage;
     }
 }
