@@ -32,7 +32,12 @@ public class InstanceService {
            }
            port+=1;
        }
-       HostSSHUtils.executeCommand("docker run -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId));
+       if (imageId==1){
+           HostSSHUtils.executeCommand("docker run -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
+       } else {
+           HostSSHUtils.executeCommand("docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"/usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"");
+       }
+        HostSSHUtils.executeCommand("docker cp /home/ubuntu/KEYSSH/"+SSHKeyService.getNameById(keyId)+".pub "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys");
 
         String query2 = "insert into instance ( nameInstance, cpus, memory, port, networkId, userId, imageId, state, keyId  ) " +
                 "values ( :nameInstance, :cpus, :memory, :port, :networkId, :userId, :imageId, :state, :keyID )";
