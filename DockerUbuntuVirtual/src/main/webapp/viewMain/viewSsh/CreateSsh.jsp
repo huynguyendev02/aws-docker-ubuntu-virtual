@@ -1,3 +1,5 @@
+<%@ page import="com.huicloud.dockerubuntuvirtual.services.SSHKeyService" %>
+<%@ page import="java.security.NoSuchAlgorithmException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -97,15 +99,17 @@
                     </div>
                     <div>
                         <br>
-                        <h6>Private key</h6>
-                        <textarea id="content" name="w3review" rows="13" cols="80"></textarea>
+
                         <div align="right">
+
                             <a href="${pageContext.request.contextPath}/Main/SSH"
                                class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
                                style="background-color: darkgrey; width: 150px; height: 45px; color: black">Cancel</a>
-
-                            <button  onclick="yeah()" style="background-color: darkorange; width: 150px; height: 45px;">Create</button>
+                            <button type="submit" style="background-color: darkorange; width: 150px; height: 45px;">
+                                    Create
+                            </button>
                         </div>
+
                     </div>
                 </form>
             </div>
@@ -114,9 +118,6 @@
 </div>
 </body>
 <script>
-    function yeah(){
-        let content = document.getElementById('content');
-        content.innerText = "Hello Hiếu"
-    }
+
 </script>
 </html>

@@ -60,6 +60,15 @@ public class InstanceServlet extends HttpServlet {
                 ServerUtils.foward("/viewMain/Instance.jsp", request, response);
                 break;
             case "/Launch":
+                System.out.println(request.getParameter("NameInstance"));
+                System.out.println(request.getParameter("OS"));
+                System.out.println(request.getParameter("CPUS"));
+                System.out.println(request.getParameter("Memory"));
+                System.out.println(request.getParameter("terminate"));
+
+
+
+
                 Instance yeah = new Instance(12, name, 123, 3, 8080, 2, 12, 15, "Processing", 15);                list.add(yeah);
                 request.setAttribute("instances", list);
                 ServerUtils.foward("/viewMain/Instance.jsp", request, response);

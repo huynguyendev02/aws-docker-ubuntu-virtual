@@ -16,7 +16,8 @@ public class HostSSHUtils {
 
     static Session session;
 
-    public static void executeCommand(String command){
+    public static String executeCommand(String command){
+        String outputConsole="";
         try{
             config.put("StrictHostKeyChecking", "no");
             jsch.addIdentity(Config.privatekeyPath);
@@ -32,7 +33,7 @@ public class HostSSHUtils {
 
             InputStream in=channel.getInputStream();
             channel.connect();
-            String outputConsole = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+             outputConsole = new String(in.readAllBytes(), StandardCharsets.UTF_8);
 //            byte[] tmp=new byte[1024];
 //            while(true){
 //                while(in.available()>0){
@@ -49,8 +50,10 @@ public class HostSSHUtils {
             channel.disconnect();
             session.disconnect();
             System.out.println("DONE");
+
         }catch(Exception e){
             e.printStackTrace();
         }
+        return outputConsole;
     }
 }

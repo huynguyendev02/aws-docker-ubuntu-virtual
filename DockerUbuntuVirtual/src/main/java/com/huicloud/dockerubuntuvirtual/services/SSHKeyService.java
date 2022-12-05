@@ -25,9 +25,10 @@ import java.util.List;
 public class SSHKeyService {
     public static String addKey(int userId, String keyName) throws NoSuchAlgorithmException, IOException {
         //generate RSA Key
-        HostSSHUtils.executeCommand("ssh-keygen -b 2048 -t rsa -f  /home/ubuntu/KEYSSH/" + UserService.getUsername(userId) + "/" + keyName + " -q -N \"\"");
+        HostSSHUtils.executeCommand("mkdir /home/ubuntu/KEYSSH/" + UserService.getUsername(userId));
+        HostSSHUtils.executeCommand("ssh-keygen -b 2048 -t rsa -f  /home/ubuntu/KEYSSH/" + UserService.getUsername(userId) + "/" + keyName + " -q -N ''");
         //give PrivateKey to User
-        String content = new String(Files.readAllBytes(Paths.get("/home/ubuntu/KEYSSH/" + UserService.getUsername(userId) + "/" + keyName)));
+        String content = HostSSHUtils.executeCommand("cat /home/ubuntu/KEYSSH/" +UserService.getUsername(userId) +"/"+keyName);
         //To SQL
         String query = "insert into sshkey ( nameKey, userId ) values ( :nameKey, :userId )";
         try (Connection con = ConnectionUtils.openConnection()) {
@@ -51,13 +52,9 @@ public class SSHKeyService {
 
     //    ========================================
     public static List<SSHKey> findAll() {
-        return new ArrayList<>(
-                Arrays.asList(
-                        new SSHKey(0, "Key của Hiếu"),
-                        new SSHKey(1, "Key của Hiếu"),
-                        new SSHKey(2, "Key của Hiếu"),
-                        new SSHKey(3, "Key của Hiếu")
-                )
-        );
+        String query = "select * from sshkey";
+        try (Connection con = ConnectionUtils.openConnection()) {
+            return con.createQuery(query).executeAndFetch(SSHKey.class);
+        }
     }
 }

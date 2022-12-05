@@ -33,7 +33,7 @@ public class UserService {
     public static String getUsername(int userId) {
         String query ="SELECT * " +
                 "FROM user " +
-                "WHERE userId = :userId";
+                "WHERE id = :userId";
         try (Connection con = ConnectionUtils.openConnection()){
             User result = con.createQuery(query)
                     .addParameter("userId",userId)

@@ -90,18 +90,19 @@
                                aria-describedby="addon-wrapping">
                     </div>
                     <br>
+
                     <div style="display: flex; justify-content: space-between">
                         <h5>Application and Os images</h5>
-                        <h5 id="OS" style="visibility: hidden"></h5>
+                        <input style="visibility: hidden" id="OS" name="OS" type="text" />
                     </div>
                     <div class="input-group">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-expanded="false">Choose OS
+                                    data-toggle="dropdown" aria-expanded="false" id="ChooseOS">Choose OS
                             </button>
                             <div class="dropdown-menu">
-                                <a onclick="UbuntuClick()" class="dropdown-item" href="#">Ubuntu</a>
-                                <a onclick="CentClick()" class="dropdown-item" href="#">CentOS</a>
+                                <a onclick="UbuntuClick()" class="dropdown-item" >Ubuntu</a>
+                                <a onclick="CentClick()" class="dropdown-item">CentOS</a>
                             </div>
                         </div>
                     </div>
@@ -109,7 +110,7 @@
 
                         <div>
                             <br>
-                            <h5>Intance type:</h5>
+                            <h5>Instance type:</h5>
                         </div>
                         <div>
                         </div>
@@ -145,23 +146,23 @@
 
                         <div style="display: flex; justify-content: space-between">
                             <h5>Termination protection</h5>
-                            <h5 id="terminate" style="visibility: hidden"></h5>
+                            <input id="terminate" style="visibility: hidden"/>
                         </div>
                         <div>
                             <div class="input-group-append">
                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-expanded="false">Choose
+                                        data-toggle="dropdown" aria-expanded="false" id="ChooseTer">Choose
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a name="Termination" onclick="enable()" class="dropdown-item" href="#">Enable</a>
-                                    <a name="Termination" onclick="disable()" class="dropdown-item" href="#">Disable</a>
+                                    <a name="Termination" onclick="enable()" class="dropdown-item">Enable</a>
+                                    <a name="Termination" onclick="disable()" class="dropdown-item">Disable</a>
                                 </div>
                             </div>
                         </div>
 
                         <div>
                             <br>
-                            <h5>Net work</h5>
+                            <h5>Network</h5>
                         </div>
 
                         <div>
@@ -180,7 +181,7 @@
 
                         <div>
                             <br>
-                            <h6>UserData</h6>
+                            <h6>Userdata</h6>
                         </div>
                         <div>
 
@@ -204,16 +205,20 @@
 </body>
 <script>
     function UbuntuClick(){
-        document.getElementById("OS").innerText = "1"
+        document.getElementById("OS").value = "1"
+        document.getElementById("ChooseOS").innerText = "Ubuntu";
     }
     function CentClick(){
-        document.getElementById("OS").innerText = "2"
+        document.getElementById("OS").value = "2";
+        document.getElementById("ChooseOS").innerText = "CentOS";
     }
     function enable(){
-        document.getElementById("terminate").innerText = "1"
+        document.getElementById("terminate").value = "1"
+        document.getElementById("ChooseTer").innerText = "Enable";
     }
     function disable(){
-        document.getElementById("terminate").innerText = "2"
+        document.getElementById("terminate").value = "2"
+        document.getElementById("ChooseTer").innerText = "Disable";
     }
 </script>
 </html>
