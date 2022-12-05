@@ -3,6 +3,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<jsp:useBean id="SSHKeys" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.SSHKey>"/>
+
+<jsp:useBean id="Networks" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Network>"/>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -127,6 +132,7 @@
                         <div>
                             <br>
                             <h5>SSH Key</h5>
+                            <input id="SSK" type="text" style="visibility: hidden">
                         </div>
 
                         <div>
@@ -135,9 +141,11 @@
                                         data-toggle="dropdown" aria-expanded="false">Choose
                                 </button>
                                 <div class="dropdown-menu">
-                                    <%--                                    Cái này lấy sau--%>
-                                    <a name="" class="dropdown-item" href="#">Open key</a>
-                                    <a name="" class="dropdown-item" href="#">Private key</a>
+                                <c:forEach items="${SSHKeys}" var="c">
+
+                                        <a name="" class="dropdown-item" onclick="SSHKey(${c.id})">${c.nameKey}</a>
+
+                                </c:forEach>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +171,7 @@
                         <div>
                             <br>
                             <h5>Network</h5>
+                            <input id="Network" type="text" style="visibility: hidden">
                         </div>
 
                         <div>
@@ -171,9 +180,11 @@
                                         data-toggle="dropdown" aria-expanded="false">Choose
                                 </button>
                                 <div class="dropdown-menu">
-                                    <%--                                    Cái này lấy sau--%>
-                                    <a name="" class="dropdown-item" href="#">VPC</a>
-                                    <a name="" class="dropdown-item" href="#">VCL</a>
+                                    <c:forEach items="${Networks}" var="c">
+
+                                        <a name="" class="dropdown-item" onclick="Network(${c.id})">${c.nameNetwork}</a>
+
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
@@ -219,6 +230,13 @@
     function disable(){
         document.getElementById("terminate").value = "2"
         document.getElementById("ChooseTer").innerText = "Disable";
+    }
+    function SSHKey(i){
+        document.getElementById("SSK").value = i;
+    }
+
+    function Network(i){
+        document.getElementById("Network").value = i;
     }
 </script>
 </html>
