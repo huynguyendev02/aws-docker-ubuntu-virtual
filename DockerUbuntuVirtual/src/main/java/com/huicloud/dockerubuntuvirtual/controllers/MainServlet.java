@@ -30,8 +30,6 @@ public class MainServlet extends HttpServlet {
                 ServerUtils.foward("/viewMain/Snap.jsp", request, response);
                 break;
             case "/SSH":
-                List<SSHKey> list2 = SSHKeyService.findAll();
-                request.setAttribute("SSHKeys", list2);
                 ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
                 break;
             default:
