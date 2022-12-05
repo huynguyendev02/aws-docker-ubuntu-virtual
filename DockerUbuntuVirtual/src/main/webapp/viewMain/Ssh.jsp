@@ -88,7 +88,7 @@
             <tr align="center">
                <td> <%=n.getNameKey()%></td>
                 <td> <%=n.getId()%></td>
-               <td>Best first search</td>
+               <td>RSA 2048 bits (sha256withrsa)</td>
             </tr>
           <% } %>
         </table>

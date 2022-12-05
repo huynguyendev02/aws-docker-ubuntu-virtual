@@ -1,5 +1,6 @@
 package com.huicloud.dockerubuntuvirtual.services;
 
+import com.huicloud.dockerubuntuvirtual.models.Instance;
 import com.huicloud.dockerubuntuvirtual.models.SSHKey;
 import com.huicloud.dockerubuntuvirtual.models.Server;
 import com.huicloud.dockerubuntuvirtual.models.User;
@@ -51,10 +52,21 @@ public class SSHKeyService {
 
 
     //    ========================================
+//    public static List<SSHKey> findAll() {
+//        String query = "select * from sshkey";
+//        try (Connection con = ConnectionUtils.openConnection()) {
+//            return con.createQuery(query).executeAndFetch(SSHKey.class);
+//        }
+//    }
+
     public static List<SSHKey> findAll() {
-        String query = "select * from sshkey";
-        try (Connection con = ConnectionUtils.openConnection()) {
-            return con.createQuery(query).executeAndFetch(SSHKey.class);
-        }
+        return new ArrayList<>(
+                Arrays.asList(
+//                        new SSHKey(1,"Key của em"),
+//                        new SSHKey(2,"Key của Dương quá"),
+                        new SSHKey(3,"Key của Cô Cô"),
+                        new SSHKey(4,"Key của em")
+                )
+        );
     }
 }

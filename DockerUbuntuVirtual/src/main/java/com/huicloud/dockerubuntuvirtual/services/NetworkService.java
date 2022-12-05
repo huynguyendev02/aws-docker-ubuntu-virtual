@@ -6,6 +6,8 @@ import com.huicloud.dockerubuntuvirtual.models.Server;
 import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
 import org.sql2o.Connection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NetworkService {
@@ -27,10 +29,18 @@ public class NetworkService {
             return network;
         }
     }
-    public static List<Network> findAll() {
-        String query = "select * from network";
-        try (Connection con = ConnectionUtils.openConnection()) {
-            return con.createQuery(query).executeAndFetch(Network.class);
-        }
-    }
+//    public static List<Network> findAll() {
+//        String query = "select * from network";
+//        try (Connection con = ConnectionUtils.openConnection()) {
+//            return con.createQuery(query).executeAndFetch(Network.class);
+//        }
+//    }
+public static List<Network> findAll() {
+    return new ArrayList<>(
+            Arrays.asList(
+                    new Network(1, "Mạng của dương quá", 12, 12),
+                    new Network(2, "Mạng của cô cô", 12, 12)
+            )
+    );
+}
 }

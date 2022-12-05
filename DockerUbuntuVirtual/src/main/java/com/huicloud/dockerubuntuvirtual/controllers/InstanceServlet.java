@@ -1,7 +1,11 @@
 package com.huicloud.dockerubuntuvirtual.controllers;
 
 import com.huicloud.dockerubuntuvirtual.models.Instance;
+import com.huicloud.dockerubuntuvirtual.models.Network;
+import com.huicloud.dockerubuntuvirtual.models.SSHKey;
 import com.huicloud.dockerubuntuvirtual.services.InstanceService;
+import com.huicloud.dockerubuntuvirtual.services.NetworkService;
+import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.*;
@@ -26,6 +30,12 @@ public class InstanceServlet extends HttpServlet {
                 ServerUtils.foward("/viewMain/Instance.jsp", request, response);
                 break;
             case "/Launch":
+                List<SSHKey> list3 = SSHKeyService.findAll();
+                request.setAttribute("SSHKeys", list3);
+
+
+                List<Network> list4 = NetworkService.findAll();
+                request.setAttribute("Networks", list4);
                 ServerUtils.foward("/viewMain/viewInstance/Launch.jsp", request, response);
                 break;
 
