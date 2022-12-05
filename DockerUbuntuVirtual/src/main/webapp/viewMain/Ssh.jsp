@@ -1,4 +1,4 @@
-<%@ page import="com.huicloud.dockerubuntuvirtual.services.SSHService" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.services.SSHKeyService" %>
 <%@ page import="com.huicloud.dockerubuntuvirtual.models.SSHKey" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -84,9 +84,9 @@
             <td>Name</td>
             <td>Algorithm</td>
           </tr>
-          <% for (SSHKey n : SSHService.findAll()) {%>
+          <% for (SSHKey n : SSHKeyService.findAll()) {%>
             <tr align="center">
-               <td> <%=n.getName()%></td>
+               <td> <%=n.getNameKey()%></td>
                 <td> <%=n.getId()%></td>
                <td>Best first search</td>
             </tr>
