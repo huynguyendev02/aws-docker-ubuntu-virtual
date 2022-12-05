@@ -8,6 +8,8 @@ import com.huicloud.dockerubuntuvirtual.utils.HostSSHUtils;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 import org.sql2o.Connection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InstanceService {
@@ -55,5 +57,19 @@ public class InstanceService {
                     .executeUpdate()
                     .getKey();
         }
+    }
+
+
+//    =======================================
+    public static List<Instance> findAll() {
+        return new ArrayList<>(
+                Arrays.asList(
+                        new Instance(1,"Máy của em", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
+                        new Instance(2,"Máy của bé", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
+                        new Instance(3,"Máy của Dương Quá", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
+                        new Instance(4,"Máy Cô Cô", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
+                        new Instance(5,"Máy của em", 123, 3, 8080, 0002, 12, 15, "Processing", 15)
+                )
+        );
     }
 }

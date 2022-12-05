@@ -18,29 +18,46 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class SSHKeyService {
     public static String addKey(int userId, String keyName) throws NoSuchAlgorithmException, IOException {
         //generate RSA Key
-        HostSSHUtils.executeCommand("ssh-keygen -b 2048 -t rsa -f  /home/ubuntu/KEYSSH/" + UserService.getUsername(userId)+"/"+ keyName +" -q -N \"\"");
+        HostSSHUtils.executeCommand("ssh-keygen -b 2048 -t rsa -f  /home/ubuntu/KEYSSH/" + UserService.getUsername(userId) + "/" + keyName + " -q -N \"\"");
         //give PrivateKey to User
-        String content = new String(Files.readAllBytes(Paths.get("/home/ubuntu/KEYSSH/" + UserService.getUsername(userId)+"/"+ keyName)));
+        String content = new String(Files.readAllBytes(Paths.get("/home/ubuntu/KEYSSH/" + UserService.getUsername(userId) + "/" + keyName)));
         //To SQL
         String query = "insert into sshkey ( nameKey, userId ) values ( :nameKey, :userId )";
-        try (Connection con = ConnectionUtils.openConnection()){
-            con.createQuery(query,true)
-                    .addParameter("nameKey",keyName)
+        try (Connection con = ConnectionUtils.openConnection()) {
+            con.createQuery(query, true)
+                    .addParameter("nameKey", keyName)
                     .addParameter("userId", userId)
                     .executeUpdate()
                     .getKey();
         }
         return content;
     }
+
     public static String getNameById(int keyId) {
         String query = "select * from sshkey where id= :keyId";
-        try (Connection con = ConnectionUtils.openConnection()){
-            SSHKey sshKey =  con.createQuery(query).addParameter("keyId",keyId).executeAndFetchFirst(SSHKey.class);
+        try (Connection con = ConnectionUtils.openConnection()) {
+            SSHKey sshKey = con.createQuery(query).addParameter("keyId", keyId).executeAndFetchFirst(SSHKey.class);
             return sshKey.getNameKey();
         }
+    }
+
+
+    //    ========================================
+    public static List<SSHKey> findAll() {
+        return new ArrayList<>(
+                Arrays.asList(
+                        new SSHKey(0, "Key của Hiếu"),
+                        new SSHKey(1, "Key của Hiếu"),
+                        new SSHKey(2, "Key của Hiếu"),
+                        new SSHKey(3, "Key của Hiếu")
+                )
+        );
     }
 }
