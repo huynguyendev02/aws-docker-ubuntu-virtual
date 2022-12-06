@@ -34,6 +34,9 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = request.getPathInfo();
+        HttpSession session = request.getSession();
+
+
         System.out.print(url);
         switch (url) {
             case "/Login":
@@ -41,7 +44,7 @@ public class LoginServlet extends HttpServlet {
                 String password = request.getParameter("password");
                 User user = UserService.checkCredentials(username,password);
                 if (user != null) {
-                    HttpSession session = request.getSession();
+
                     session.setAttribute("userId" , user.getId());
                     session.setAttribute("username" , user.getUsername());
 
