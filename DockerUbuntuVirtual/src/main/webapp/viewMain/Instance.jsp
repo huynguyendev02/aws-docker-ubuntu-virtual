@@ -1,4 +1,5 @@
 <%@ page import="com.huicloud.dockerubuntuvirtual.services.InstanceService" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.services.NetworkService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -24,25 +25,26 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-        <i class="fa fa-cloud fa-2x" aria-hidden="true"></i>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<%--<nav class="navbar navbar-expand-lg navbar-light bg-light">--%>
+<%--    <a class="navbar-brand" href="#">--%>
+<%--        <i class="fa fa-cloud fa-2x" aria-hidden="true"></i>--%>
+<%--    </a>--%>
+<%--    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"--%>
+<%--            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">--%>
+<%--        <span class="navbar-toggler-icon"></span>--%>
+<%--    </button>--%>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent"
-         style="display: flex; justify-content: space-between">
-        <h5>
-            Hui & Hiu Cloud
-        </h5>
-        <h5 class="col-lg-2">
-            User name
-        </h5>
-    </div>
-</nav>
+<%--    <div class="collapse navbar-collapse" id="navbarSupportedContent"--%>
+<%--         style="display: flex; justify-content: space-between">--%>
+<%--        <h5>--%>
+<%--            Hui & Hiu Cloud--%>
+<%--        </h5>--%>
+<%--        <h5 class="col-lg-2">--%>
+<%--            User name--%>
+<%--        </h5>--%>
+<%--    </div>--%>
+<%--</nav>--%>
+<jsp:include page="./../partial/Navication.jsp"></jsp:include>
 <div class="container-fluid mt-3">
     <div class="row">
         <div class="col-sm-3">
@@ -109,20 +111,22 @@
                         <td>ID</td>
                         <td>Name</td>
                         <td>State</td>
+                        <td>Network</td>
+                        <td>Port</td>
                         <td>CPUS</td>
                         <td>Memory</td>
-                        <td>ID User</td>
                     </tr>
 
                     <c:forEach items="${instances}" var="c">
                         <tr align="center">
                             <td><input name="choose" type="radio" onclick="choose(${c.id})" value="Yes"/></td>
                             <td>${c.id}</td>
-                            <td>${c.nameInstance}</td>
+                            <td>${c.nameInstance.split(0)[1]}</td>
                             <td>${c.state}</td>
+                            <td>${c.serverIp()}</td>
+                            <td>${c.getport()}</td>
                             <td>${c.cpus}</td>
                             <td>${c.memory}</td>
-                            <td>${c.userId}</td>
                         </tr>
                     </c:forEach>
                 </table>

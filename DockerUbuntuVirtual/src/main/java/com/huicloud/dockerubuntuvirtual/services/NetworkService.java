@@ -2,6 +2,8 @@ package com.huicloud.dockerubuntuvirtual.services;
 
 import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
+import com.huicloud.dockerubuntuvirtual.utils.HostSSHUtils;
+import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 import org.sql2o.Connection;
 
 import java.util.ArrayList;
@@ -10,7 +12,8 @@ import java.util.List;
 
 public class NetworkService {
     public static void addNetwork(int userId, String nameNetwork, int serverId){
-        String query = "insert into server ( nameNetwork, userId, serverId ) values ( :nameNetwork, :userId, :serverId )";
+        HostSSHUtils.executeCommand("docker network create "+UserService.getUsername(userId)+":"+nameNetwork);
+        String query = "insert into network ( nameNetwork, userId, serverId ) values ( :nameNetwork, :userId, :serverId )";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query,true)
                     .addParameter("nameNetwork", UserService.getUsername(userId) +":"+nameNetwork)

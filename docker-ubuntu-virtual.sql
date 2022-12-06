@@ -11,7 +11,7 @@
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 04/12/2022 11:27:45
+ Date: 06/12/2022 15:20:36
 */
 
 SET NAMES utf8mb4;
@@ -25,11 +25,7 @@ CREATE TABLE `image`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `nameImage` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of image
--- ----------------------------
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for instance
@@ -38,9 +34,9 @@ DROP TABLE IF EXISTS `instance`;
 CREATE TABLE `instance`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `nameInstance` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `cpus` float NULL DEFAULT NULL,
-  `memory` float NULL DEFAULT NULL,
-  `ipSSH` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `cpus` double NULL DEFAULT NULL,
+  `memory` double NULL DEFAULT NULL,
+  `port` int NULL DEFAULT NULL,
   `networkId` int NULL DEFAULT NULL,
   `userId` int NULL DEFAULT NULL,
   `imageId` int NULL DEFAULT NULL,
@@ -56,11 +52,7 @@ CREATE TABLE `instance`  (
   CONSTRAINT `instance_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `instance_ibfk_3` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `instance_ibfk_4` FOREIGN KEY (`keyId`) REFERENCES `sshkey` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of instance
--- ----------------------------
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for network
@@ -76,11 +68,7 @@ CREATE TABLE `network`  (
   INDEX `serverId`(`serverId` ASC) USING BTREE,
   CONSTRAINT `network_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `network_ibfk_2` FOREIGN KEY (`serverId`) REFERENCES `server` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of network
--- ----------------------------
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for server
@@ -92,11 +80,6 @@ CREATE TABLE `server`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ipServer`(`ipServer` ASC) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of server
--- ----------------------------
-INSERT INTO `server` VALUES (1, '54.175.98.141');
 
 -- ----------------------------
 -- Table structure for snapshot
@@ -115,26 +98,17 @@ CREATE TABLE `snapshot`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of snapshot
--- ----------------------------
-
--- ----------------------------
 -- Table structure for sshkey
 -- ----------------------------
 DROP TABLE IF EXISTS `sshkey`;
 CREATE TABLE `sshkey`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `nameKey` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `publicKey` blob NULL,
   `userId` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `userId`(`userId` ASC) USING BTREE,
   CONSTRAINT `sshkey_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of sshkey
--- ----------------------------
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user
@@ -146,11 +120,6 @@ CREATE TABLE `user`  (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user
--- ----------------------------
-INSERT INTO `user` VALUES (1, 'huynguyen', '123123');
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

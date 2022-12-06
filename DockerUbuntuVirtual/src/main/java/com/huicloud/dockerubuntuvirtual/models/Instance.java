@@ -1,5 +1,8 @@
 package com.huicloud.dockerubuntuvirtual.models;
 
+import com.huicloud.dockerubuntuvirtual.services.NetworkService;
+import com.huicloud.dockerubuntuvirtual.services.ServerServices;
+
 public class Instance {
     int id;
     String nameInstance;
@@ -104,4 +107,8 @@ public class Instance {
     public void setKeyId(int keyId) {
         this.keyId = keyId;
     }
+    public String serverIp(){
+        return ServerServices.findServerById(NetworkService.findNetworkById(this.networkId).serverId).getIpServer();
+    }
+
 }

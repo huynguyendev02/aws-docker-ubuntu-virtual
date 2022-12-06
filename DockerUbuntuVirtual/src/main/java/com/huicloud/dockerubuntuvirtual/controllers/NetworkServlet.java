@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,13 +20,13 @@ public class NetworkServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = request.getPathInfo();
-
+        HttpSession session = request.getSession();
         if (url == null || url.equals("/")) {
             url = "/";
         }
         switch (url) {
             case "/":
-                List<Network> list3 = NetworkService.findAllById(1);
+                List<Network> list3 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("Networks", list3);
                 ServerUtils.foward("/viewMain/Network.jsp", request, response);
                 break;
@@ -43,11 +44,13 @@ public class NetworkServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = request.getPathInfo();
+        HttpSession session = request.getSession();
         switch (url) {
             case "/Create":
-                String ServerID = request.getParameter("ServerID");
+                String serverId = request.getParameter("ServerID");
+                String nameNetwork = request.getParameter("nameNetwork");
 
-
+                NetworkService.addNetwork((Integer)session.getAttribute("userId"),nameNetwork, Integer.parseInt(serverId) );
                 List<Server> list4 = ServerServices.findAll();
                 request.setAttribute("Servers", list4);
                 ServerUtils.foward("/viewMain/viewNetwork/CreateNetwork.jsp", request, response);

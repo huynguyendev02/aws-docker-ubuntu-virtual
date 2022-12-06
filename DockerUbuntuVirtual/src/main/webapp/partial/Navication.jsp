@@ -1,3 +1,5 @@
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">
     <i class="fa fa-cloud fa-2x" aria-hidden="true"></i>
@@ -11,7 +13,16 @@
       Hui & Hiu Cloud
     </h5>
     <h5 class="col-lg-2">
-      User name
+      <div class="input-group-append" style="padding-top: 10px">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button"data-toggle="dropdown" aria-expanded="false">
+          <span id="Username">
+            Account Settings
+          </span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/Home/Login">Log out</a>
+        </div>
+      </div>
     </h5>
   </div>
 </nav>

@@ -43,6 +43,8 @@ public class LoginServlet extends HttpServlet {
                 if (user != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("userId" , user.getId());
+                    session.setAttribute("username" , user.getUsername());
+
                     List<Instance> list2 = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                     request.setAttribute("instances", list2);
 

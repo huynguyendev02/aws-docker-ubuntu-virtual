@@ -32,11 +32,11 @@ public class InstanceService {
            port+=1;
        }
        if (imageId==1){
-           System.out.print("docker run -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
-          String log =  HostSSHUtils.executeCommand("docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
+           System.out.print("docker run -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
+          String log =  HostSSHUtils.executeCommand("docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
           System.out.print(log);
        } else {
-           String commandCentOS = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+           String commandCentOS = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
            String log = HostSSHUtils.executeCommand(commandCentOS);
            System.out.print(log);
        }

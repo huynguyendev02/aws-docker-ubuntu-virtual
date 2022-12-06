@@ -19,23 +19,8 @@
           crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <i class="fa fa-cloud fa-2x" aria-hidden="true"></i>
-  </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<jsp:include page="./../partial/Navication.jsp"></jsp:include>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex; justify-content: space-between">
-    <h5>
-      Hui & Hiu Cloud
-    </h5>
-    <h5 class="col-lg-2">
-      User name
-    </h5>
-  </div>
-</nav>
 <div class="container-fluid mt-3">
   <div class="row">
     <div class="col-sm-3">
@@ -70,7 +55,7 @@
         <span id="home"> Snapshot </span>
       </div>
       <div class="card-body mr-2" style="border-style: solid; border-width: 1px">
-        Dương quá cụt tay
+        Coming Soon !
       </div>
     </div>
   </div>
