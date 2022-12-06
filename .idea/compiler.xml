@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="DockerUbuntuVirtual" target="19" />
+      <module name="DockerUbuntuVirtual" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

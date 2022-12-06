@@ -1,8 +1,9 @@
-<%@ page import="com.huicloud.dockerubuntuvirtual.services.InstanceService" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.services.SSHKeyService" %>
+<%@ page import="java.security.NoSuchAlgorithmException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<jsp:useBean id="instances" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Instance>"/>
+<jsp:useBean id="Servers" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Server>"/>
 
 
 <!DOCTYPE html>
@@ -75,65 +76,65 @@
                         </a>
                     </div>
 
+
                 </div>
             </div>
         </div>
         <div class="col-sm-9">
             <div class="card-header mr-2" style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between">
-                <div style="display: flex; justify-content: space-between">
-                    <h2>Instance</h2>
-                    <h10 id="idInstance" style="visibility: hidden"></h10>
-                </div>
+                <div><h2>Create Network</h2></div>
                 <div style="width: 60%">
-                    <div class="dropdown" style="width: 100%" align="right">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style=" height: 45px;">
-                            Choose state
-                        </button>
-                        <a href="${pageContext.request.contextPath}/Main/Instance/Launch"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background-color: darkorange; width: 150px; height: 45px; color: black">Launch</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Stop</a>
-                            <a class="dropdown-item" href="#">Start</a>
-                            <a class="dropdown-item" href="#">Terminate</a>
-                        </div>
-                    </div>
 
                 </div>
             </div>
-
             <div class="card-body mr-2" style="border-style: solid; border-width: 1px">
-                <table style="width: 100%">
-                    <tr style="background-color: beige" align="center">
-                        <td>Choose</td>
-                        <td>ID</td>
-                        <td>Name</td>
-                        <td>State</td>
-                        <td>CPUS</td>
-                        <td>Memory</td>
-                        <td>ID User</td>
-                    </tr>
+                <form action="" method="post">
+                    <div class="input-group flex-nowrap">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" >Network name</span>
+                        </div>
+                        <input name="nameNetwork" type="text" class="form-control" placeholder="Network name" aria-label="Username"
+                               aria-describedby="addon-wrapping">
+                    </div>
+                    <div>
+                        <input id="ServerID" type="text" style="visibility: hidden">
+                    </div>
+                    <div>
+                        <div class="input-group-append">
+                            <button id="Choose" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-expanded="false">Choose ServerIP
+                            </button>
+                            <div class="dropdown-menu">
+                                <c:forEach items="${Servers}" var="c">
+                                    <a name="" class="dropdown-item" onclick="choose(${c.id},'${c.ipServer}')">${c.ipServer}</a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <br>
 
-                    <c:forEach items="${instances}" var="c">
-                        <tr align="center">
-                            <td><input name="choose" type="radio" onclick="choose(${c.id})" value="Yes"/></td>
-                            <td>${c.id}</td>
-                            <td>${c.nameInstance}</td>
-                            <td>${c.state}</td>
-                            <td>${c.cpus}</td>
-                            <td>${c.memory}</td>
-                            <td>${c.userId}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
+                        <div align="right">
+
+                            <a href="${pageContext.request.contextPath}/Main/Network"
+                               class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
+                               style="background-color: darkgrey; width: 150px; height: 45px; color: black">Cancel</a>
+                            <button type="submit" style="background-color: darkorange; width: 150px; height: 45px;">
+                                Create
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
+</body>
 <script>
-    function choose(id){
-        document.getElementById("idInstance").innerText = id
+    function choose (id, name){
+        document.getElementById("ServerID").value = id;
+        document.getElementById("Choose").innerText = name;
     }
 </script>
-</body>
 </html>

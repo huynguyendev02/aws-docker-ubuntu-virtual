@@ -1,8 +1,9 @@
-<%@ page import="com.huicloud.dockerubuntuvirtual.services.InstanceService" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.services.NetworkService" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.models.Network" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<jsp:useBean id="instances" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Instance>"/>
+<jsp:useBean id="Networks" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Network>"/>
 
 
 <!DOCTYPE html>
@@ -72,31 +73,21 @@
                     <div>
                         <a href="${pageContext.request.contextPath}/Main/Network" class="btn btn-primary btn-lg active bt"
                            role="button" aria-pressed="true" style="background: white; width: 100%; color: black">Network
-                        </a>
+                            </a>
                     </div>
-
                 </div>
             </div>
         </div>
         <div class="col-sm-9">
             <div class="card-header mr-2" style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between">
                 <div style="display: flex; justify-content: space-between">
-                    <h2>Instance</h2>
-                    <h10 id="idInstance" style="visibility: hidden"></h10>
+                    <h2>Network</h2>
                 </div>
                 <div style="width: 60%">
                     <div class="dropdown" style="width: 100%" align="right">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style=" height: 45px;">
-                            Choose state
-                        </button>
-                        <a href="${pageContext.request.contextPath}/Main/Instance/Launch"
+                        <a href="${pageContext.request.contextPath}/Main/Network/Create"
                            class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background-color: darkorange; width: 150px; height: 45px; color: black">Launch</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Stop</a>
-                            <a class="dropdown-item" href="#">Start</a>
-                            <a class="dropdown-item" href="#">Terminate</a>
-                        </div>
+                           style="background-color: darkorange; width: 150px; height: 45px; color: black">Create</a>
                     </div>
 
                 </div>
@@ -105,23 +96,15 @@
             <div class="card-body mr-2" style="border-style: solid; border-width: 1px">
                 <table style="width: 100%">
                     <tr style="background-color: beige" align="center">
-                        <td>Choose</td>
                         <td>ID</td>
-                        <td>Name</td>
-                        <td>State</td>
-                        <td>CPUS</td>
-                        <td>Memory</td>
+                        <td>NetworkName</td>
                         <td>ID User</td>
                     </tr>
 
-                    <c:forEach items="${instances}" var="c">
+                    <c:forEach items="${Networks}" var="c">
                         <tr align="center">
-                            <td><input name="choose" type="radio" onclick="choose(${c.id})" value="Yes"/></td>
                             <td>${c.id}</td>
-                            <td>${c.nameInstance}</td>
-                            <td>${c.state}</td>
-                            <td>${c.cpus}</td>
-                            <td>${c.memory}</td>
+                            <td>${c.nameNetwork}</td>
                             <td>${c.userId}</td>
                         </tr>
                     </c:forEach>
