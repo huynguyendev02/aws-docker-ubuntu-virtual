@@ -1,8 +1,6 @@
 package com.huicloud.dockerubuntuvirtual.services;
 
 import com.huicloud.dockerubuntuvirtual.models.Network;
-import com.huicloud.dockerubuntuvirtual.models.SSHKey;
-import com.huicloud.dockerubuntuvirtual.models.Server;
 import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
 import org.sql2o.Connection;
 
@@ -35,12 +33,10 @@ public class NetworkService {
 //            return con.createQuery(query).executeAndFetch(Network.class);
 //        }
 //    }
-public static List<Network> findAll() {
-    return new ArrayList<>(
-            Arrays.asList(
-                    new Network(1, "Mạng của dương quá", 12, 12),
-                    new Network(2, "Mạng của cô cô", 12, 12)
-            )
-    );
-}
+    public static List<Network> findAllById(int userId) {
+        String query = "select * from network where userId= :userId";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return con.createQuery(query).addParameter("userId",userId).executeAndFetch(Network.class);
+        }
+    }
 }

@@ -49,6 +49,8 @@ public class SSHServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = request.getPathInfo();
+        HttpSession session = request.getSession();
+
         if (url == null || url.equals("/")) {
             url = "/";
         }
@@ -58,9 +60,8 @@ public class SSHServlet extends HttpServlet {
                 ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
                 break;
             case "/Create":
-                HttpSession session = request.getSession();
                 try {
-                    String key = SSHKeyService.addKey(1,request.getParameter("nameKey") );
+                    String key = SSHKeyService.addKey((Integer) session.getAttribute("userId"),request.getParameter("nameKey") );
                     session.setAttribute("SSHKey",key);
 
                 } catch (NoSuchAlgorithmException e) {

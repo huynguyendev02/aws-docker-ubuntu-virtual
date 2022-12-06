@@ -5,11 +5,8 @@ import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.models.Server;
 import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
 import com.huicloud.dockerubuntuvirtual.utils.HostSSHUtils;
-import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 import org.sql2o.Connection;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InstanceService {
@@ -35,14 +32,19 @@ public class InstanceService {
            port+=1;
        }
        if (imageId==1){
-           HostSSHUtils.executeCommand("docker run -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
+           System.out.print("docker run -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
+          String log =  HostSSHUtils.executeCommand("docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
+          System.out.print(log);
        } else {
-           HostSSHUtils.executeCommand("docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"/usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"");
+           String commandCentOS = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " +UserService.getUsername(userId)+":" + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+           String log = HostSSHUtils.executeCommand(commandCentOS);
+           System.out.print(log);
        }
-        HostSSHUtils.executeCommand("docker cp /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+SSHKeyService.getNameById(keyId)+".pub "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys");
-
+        String log2 =
+                HostSSHUtils.executeCommand("docker cp /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+SSHKeyService.getNameById(keyId)+".pub "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys");
+        System.out.print(log2);
         String query2 = "insert into instance ( nameInstance, cpus, memory, port, networkId, userId, imageId, state, keyId  ) " +
-                "values ( :nameInstance, :cpus, :memory, :port, :networkId, :userId, :imageId, :state, :keyID )";
+                "values ( :nameInstance, :cpus, :memory, :port, :networkId, :userId, :imageId, :state, :keyId )";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query2,true)
                     .addParameter("nameInstance",UserService.getUsername(userId) +"0"+nameInstance)
@@ -61,15 +63,12 @@ public class InstanceService {
 
 
 //    =======================================
-    public static List<Instance> findAll() {
-        return new ArrayList<>(
-                Arrays.asList(
-                        new Instance(1,"Máy của em", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
-                        new Instance(2,"Máy của bé", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
-                        new Instance(3,"Máy của Dương Quá", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
-                        new Instance(4,"Máy Cô Cô", 123, 3, 8080, 0002, 12, 15, "Processing", 15),
-                        new Instance(5,"Máy của em", 123, 3, 8080, 0002, 12, 15, "Processing", 15)
-                )
-        );
+    public static List<Instance> findAllByUserId(int userId) {
+        String query1 = "select * from instance where userId=:userId";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return con.createQuery(query1)
+                    .addParameter("userId",userId)
+                    .executeAndFetch(Instance.class);
+        }
     }
 }

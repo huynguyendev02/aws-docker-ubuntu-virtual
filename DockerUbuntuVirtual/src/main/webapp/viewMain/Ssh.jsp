@@ -84,7 +84,7 @@
             <td>Name</td>
             <td>Algorithm</td>
           </tr>
-          <% for (SSHKey n : SSHKeyService.findAll()) {%>
+          <% for (SSHKey n : SSHKeyService.findAllById(1)) {%>
             <tr align="center">
                <td> <%=n.getNameKey()%></td>
                 <td> <%=n.getId()%></td>

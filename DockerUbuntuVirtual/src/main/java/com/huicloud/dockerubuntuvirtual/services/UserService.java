@@ -6,16 +6,15 @@ import com.huicloud.dockerubuntuvirtual.utils.HostSSHUtils;
 import org.sql2o.Connection;
 
 public class UserService {
-    public static int checkCredentials(String username, String password){
-        String query ="SELECT COUNT(*) " +
+    public static User checkCredentials(String username, String password){
+        String query ="SELECT * " +
                 "FROM user " +
                 "WHERE username = :username AND password = :password";
         try (Connection con = ConnectionUtils.openConnection()){
-            int result = con.createQuery(query)
+            return con.createQuery(query)
                     .addParameter("username",username)
                     .addParameter("password",password)
-                    .executeScalar(Integer.class);
-            return result;
+                    .executeAndFetchFirst(User.class);
         }
     }
     public static int checkUsername(String username) {

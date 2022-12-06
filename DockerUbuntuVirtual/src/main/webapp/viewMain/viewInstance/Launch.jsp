@@ -132,7 +132,7 @@
                         <div>
                             <br>
                             <h5>SSH Key</h5>
-                            <input id="SSK" type="text" style="visibility: hidden">
+                            <input name="SSK" id="SSK" type="text" style="visibility: hidden">
                         </div>
 
                         <div>
@@ -154,7 +154,7 @@
 
                         <div style="display: flex; justify-content: space-between">
                             <h5>Termination protection</h5>
-                            <input id="terminate" style="visibility: hidden"/>
+                            <input name="terminate" id="terminate" style="visibility: hidden"/>
                         </div>
                         <div>
                             <div class="input-group-append">
@@ -171,7 +171,7 @@
                         <div>
                             <br>
                             <h5>Network</h5>
-                            <input id="Network" type="text" style="visibility: hidden">
+                            <input name="Network" id="Network" type="text" style="visibility: hidden">
                         </div>
 
                         <div>

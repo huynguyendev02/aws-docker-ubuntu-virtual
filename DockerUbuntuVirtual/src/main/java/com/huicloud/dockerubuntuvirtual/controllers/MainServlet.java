@@ -1,16 +1,13 @@
 package com.huicloud.dockerubuntuvirtual.controllers;
 
 import com.huicloud.dockerubuntuvirtual.models.Instance;
-import com.huicloud.dockerubuntuvirtual.models.SSHKey;
 import com.huicloud.dockerubuntuvirtual.services.InstanceService;
 
-import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
-import java.io.Console;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,10 +16,11 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String url = request.getPathInfo();
+        HttpSession session = request.getSession();
         RequestDispatcher rd;
         switch (url){
             case "/Instance":
-                List<Instance> list = InstanceService.findAll();
+                List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                 request.setAttribute("instances", list);
                 ServerUtils.foward("/viewMain/Instance.jsp", request, response);
                 break;

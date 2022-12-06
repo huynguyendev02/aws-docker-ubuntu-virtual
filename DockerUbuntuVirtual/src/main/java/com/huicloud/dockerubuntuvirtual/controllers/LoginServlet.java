@@ -1,7 +1,9 @@
 package com.huicloud.dockerubuntuvirtual.controllers;
 
 import com.huicloud.dockerubuntuvirtual.models.Instance;
+import com.huicloud.dockerubuntuvirtual.models.User;
 import com.huicloud.dockerubuntuvirtual.services.InstanceService;
+import com.huicloud.dockerubuntuvirtual.services.UserService;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.*;
@@ -35,27 +37,29 @@ public class LoginServlet extends HttpServlet {
         System.out.print(url);
         switch (url) {
             case "/Login":
-                String UserName = request.getParameter("username");
-                String Pass = request.getParameter("password");
-
-//                Kiểm tra tài khoản
-
-
-                if (UserName.toString().equals("hehe")) {
-                    List<Instance> list2 = InstanceService.findAll();
+                String username = request.getParameter("username");
+                String password = request.getParameter("password");
+                User user = UserService.checkCredentials(username,password);
+                if (user != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("userId" , user.getId());
+                    List<Instance> list2 = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                     request.setAttribute("instances", list2);
-                    ServerUtils.foward("/viewMain/Instance.jsp", request, response);
-                } else
+
+                    response.sendRedirect(request.getContextPath() + "/Main/Instance");
+
+                }
+                else {
                     ServerUtils.foward("/viewLogin/Login.jsp", request, response);
+                }
                 break;
             case "/Register":
-                String newUserName = request.getParameter("newUserName");
+                String newUsername = request.getParameter("newUsername");
                 String newPassword = request.getParameter("newPassword");
-                String confirmNewPassword = request.getParameter("confirmNewPassword");
+                System.out.print(newUsername + newPassword);
+                UserService.register(newUsername,newPassword);
 
-//                Hàm thêm tài khoản
-
-                ServerUtils.foward("/viewLogin/Login.jsp", request, response);
+                response.sendRedirect(request.getContextPath() + "/Home/Login");
                 break;
             default:
                 break;

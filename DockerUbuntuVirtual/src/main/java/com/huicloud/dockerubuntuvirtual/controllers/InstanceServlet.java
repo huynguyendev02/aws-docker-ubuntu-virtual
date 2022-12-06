@@ -18,23 +18,26 @@ import java.util.List;
 public class InstanceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String url = request.getPathInfo();
 
+
+        String url = request.getPathInfo();
+        HttpSession session = request.getSession();
         if (url == null || url.equals("/")) {
             url = "/";
         }
         switch (url) {
             case "/":
-                List<Instance> list = InstanceService.findAll();
+
+                List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                 request.setAttribute("instances", list);
                 ServerUtils.foward("/viewMain/Instance.jsp", request, response);
                 break;
             case "/Launch":
-                List<SSHKey> list3 = SSHKeyService.findAll();
+                List<SSHKey> list3 = SSHKeyService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("SSHKeys", list3);
 
 
-                List<Network> list4 = NetworkService.findAll();
+                List<Network> list4 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("Networks", list4);
                 ServerUtils.foward("/viewMain/viewInstance/Launch.jsp", request, response);
                 break;
@@ -46,41 +49,26 @@ public class InstanceServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String name, id, state, type, ssh, ip, monitor, lunchTime;
-        name = request.getParameter("NameInstance");
-        type = "";
-        ssh = "";
-        monitor = "";
-
-        //        cái này lấy ở dưới Data
-        id = "1";
-        state = "Processing";
-        ip = "192.168.12.13";
-        lunchTime = "12-12-12";
-        List<Instance> list = InstanceService.findAll();
 
         String url = request.getPathInfo();
-
+        HttpSession session = request.getSession();
         if (url == null || url.equals("/")) {
             url = "/";
         }
         switch (url) {
-            case "/":
-                request.setAttribute("instances", list);
-                ServerUtils.foward("/viewMain/Instance.jsp", request, response);
-                break;
             case "/Launch":
-                System.out.println(request.getParameter("NameInstance"));
-                System.out.println(request.getParameter("OS"));
-                System.out.println(request.getParameter("CPUS"));
-                System.out.println(request.getParameter("Memory"));
-                System.out.println(request.getParameter("terminate"));
+                String nameIns = request.getParameter("NameInstance");
+                int osId =   Integer.parseInt(request.getParameter("OS")) ;
+                double cpus = Double.parseDouble(request.getParameter("CPUS"));
+                double mem =  Double.parseDouble(request.getParameter("Memory"));
+                String terminateState = request.getParameter("terminate");
+                int sshId =Integer.parseInt(request.getParameter("SSK")) ;
+                int netId = Integer.parseInt(request.getParameter("Network"));
 
+                InstanceService.createImage(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
+                List<Instance> listIns =InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
 
-
-
-                Instance yeah = new Instance(12, name, 123, 3, 8080, 2, 12, 15, "Processing", 15);                list.add(yeah);
-                request.setAttribute("instances", list);
+                request.setAttribute("instances", listIns);
                 ServerUtils.foward("/viewMain/Instance.jsp", request, response);
                 break;
             default:
