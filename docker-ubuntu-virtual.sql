@@ -5,13 +5,13 @@
  Source Server Type    : MySQL
  Source Server Version : 100427
  Source Host           : localhost:3306
- Source Schema         : docker-ubuntu-virtual
+ Source Schema         : ubuntudockercloud
 
  Target Server Type    : MySQL
  Target Server Version : 100427
  File Encoding         : 65001
 
- Date: 06/12/2022 15:20:36
+ Date: 07/12/2022 17:48:45
 */
 
 SET NAMES utf8mb4;
@@ -25,7 +25,13 @@ CREATE TABLE `image`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `nameImage` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of image
+-- ----------------------------
+INSERT INTO `image` VALUES (1, 'ubuntu');
+INSERT INTO `image` VALUES (2, 'centos');
 
 -- ----------------------------
 -- Table structure for instance
@@ -42,6 +48,7 @@ CREATE TABLE `instance`  (
   `imageId` int NULL DEFAULT NULL,
   `state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `keyId` int NULL DEFAULT NULL,
+  `terminate` int NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `nameInstance`(`nameInstance` ASC) USING BTREE,
   INDEX `networkId`(`networkId` ASC) USING BTREE,
@@ -52,7 +59,11 @@ CREATE TABLE `instance`  (
   CONSTRAINT `instance_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `instance_ibfk_3` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `instance_ibfk_4` FOREIGN KEY (`keyId`) REFERENCES `sshkey` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of instance
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for network
@@ -68,7 +79,11 @@ CREATE TABLE `network`  (
   INDEX `serverId`(`serverId` ASC) USING BTREE,
   CONSTRAINT `network_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `network_ibfk_2` FOREIGN KEY (`serverId`) REFERENCES `server` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of network
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for server
@@ -79,7 +94,12 @@ CREATE TABLE `server`  (
   `ipServer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ipServer`(`ipServer` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of server
+-- ----------------------------
+INSERT INTO `server` VALUES (2, '54.175.98.141');
 
 -- ----------------------------
 -- Table structure for snapshot
@@ -95,7 +115,11 @@ CREATE TABLE `snapshot`  (
   INDEX `imageId`(`imageId` ASC) USING BTREE,
   CONSTRAINT `snapshot_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `snapshot_ibfk_2` FOREIGN KEY (`imageId`) REFERENCES `image` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of snapshot
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for sshkey
@@ -108,7 +132,11 @@ CREATE TABLE `sshkey`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `userId`(`userId` ASC) USING BTREE,
   CONSTRAINT `sshkey_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of sshkey
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for user
@@ -120,6 +148,12 @@ CREATE TABLE `user`  (
   `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO `user` VALUES (8, 'huynguyen', '123123');
+INSERT INTO `user` VALUES (9, 'admin', 'admin');
 
 SET FOREIGN_KEY_CHECKS = 1;
