@@ -27,34 +27,7 @@
 <jsp:include page="./../../partial/Navication.jsp"></jsp:include>
 <div class="container-fluid mt-3">
     <div class="row">
-        <div class="col-sm-3">
-            <div class="card">
-                <div class="card-header">
-                    Featured
-                </div>
-                <div class="card-body">
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Instance"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Instance</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Snapshot"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Snapshot</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/SSH" class="btn btn-primary btn-lg active bt"
-                           role="button" aria-pressed="true" style="background: white; width: 100%; color: black">SSH
-                            Key</a>
-
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <jsp:include page="../../partial/Left.jsp"></jsp:include>
         <div class="col-sm-9">
             <div class="card-header mr-2" style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between">
                 <div><h2>Create SSH</h2></div>
@@ -76,7 +49,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" >Algorithm</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="RSA-2048 bits (sha256withrsa)" aria-label="Username"
+                        <input type="text" class="form-control" placeholder="RSA-4096 bits (sha256withrsa)" aria-label="Username"
                                aria-describedby="addon-wrapping" readonly="True">
                     </div>
                     <div>
@@ -84,11 +57,11 @@
 
                         <div align="right">
 
-                            <a href="${pageContext.request.contextPath}/Main/SSH"
-                               class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                               style="background-color: darkgrey; width: 150px; height: 45px; color: black">Cancel</a>
-                            <button type="submit" style="background-color: darkorange; width: 150px; height: 45px;">
-                                    Create
+
+
+                            <a class="btn btn-outline-danger" href="${pageContext.request.contextPath}/Main/SSH" role="button">Cancel</a>
+                            <button type="submit" class="btn btn-primary" style="width: 150px;">
+                                Create
                             </button>
                         </div>
 

@@ -39,6 +39,7 @@ public class SSHServlet extends HttpServlet {
             case "/ShowPrivateKey":
                 ServletContext context = getServletContext();
                 String fullPath = context.getRealPath("/key.pem");
+
                 Path path = Paths.get(fullPath);
                 byte[] data = Files.readAllBytes(path);
                 response.setContentType("application/x-pem-file");

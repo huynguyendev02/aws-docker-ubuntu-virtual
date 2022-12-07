@@ -31,18 +31,24 @@ public class InstanceService {
            }
            port+=1;
        }
-       if (imageId==1){
-           System.out.print("docker run -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
-          String log =  HostSSHUtils.executeCommand("docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage());
-          System.out.print(log);
+       String commandUbuntuKey = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage();
+       String commandUbuntuPass = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"pass";
+       String commandCentosKey = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+       String commandCentosPass = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"pass /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+
+       if (keyId==0) {
+           if (imageId ==1)
+               HostSSHUtils.executeCommand(commandUbuntuPass);
+           else
+               HostSSHUtils.executeCommand(commandCentosPass);
        } else {
-           String commandCentOS = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
-           String log = HostSSHUtils.executeCommand(commandCentOS);
-           System.out.print(log);
+           if (imageId ==1)
+               HostSSHUtils.executeCommand(commandUbuntuKey);
+           else
+               HostSSHUtils.executeCommand(commandCentosKey);
+           HostSSHUtils.executeCommand("sudo docker cp /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+SSHKeyService.getNameById(keyId)+"pub.pem "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys");
        }
-        String log2 =
-                HostSSHUtils.executeCommand("docker cp /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+SSHKeyService.getNameById(keyId)+".pub "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys");
-        System.out.print(log2);
+
         String query2 = "insert into instance ( nameInstance, cpus, memory, port, networkId, userId, imageId, state, keyId  ) " +
                 "values ( :nameInstance, :cpus, :memory, :port, :networkId, :userId, :imageId, :state, :keyId )";
         try (Connection con = ConnectionUtils.openConnection()){
@@ -55,7 +61,7 @@ public class InstanceService {
                     .addParameter("userId",userId)
                     .addParameter("imageId",imageId)
                     .addParameter("state","Running")
-                    .addParameter("keyId",keyId)
+                    .addParameter("keyId",keyId==0 ? null : keyId )
                     .executeUpdate()
                     .getKey();
         }

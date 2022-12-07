@@ -31,39 +31,7 @@
 
 <div class="container-fluid mt-3">
     <div class="row">
-        <div class="col-sm-3">
-            <div class="card">
-                <div class="card-header">
-                    Featured
-                </div>
-                <div class="card-body">
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Instance"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Instance</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Snapshot"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Snapshot</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/SSH" class="btn btn-primary btn-lg active bt"
-                           role="button" aria-pressed="true" style="background: white; width: 100%; color: black">SSH
-                            Key</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Network" class="btn btn-primary btn-lg active bt"
-                           role="button" aria-pressed="true" style="background: white; width: 100%; color: black">Network
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <jsp:include page="../../partial/Left.jsp"></jsp:include>
         <div class="col-sm-9">
             <div class="card-header mr-2"
                  style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between">
@@ -79,14 +47,15 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="addon-wrapping">NameInstance</span>
                         </div>
-                        <input name="NameInstance" type="text" class="form-control" placeholder="NameInstance" aria-label="NameInstance"
+                        <input name="NameInstance" type="text" class="form-control" placeholder="NameInstance"
+                               aria-label="NameInstance"
                                aria-describedby="addon-wrapping">
                     </div>
                     <br>
 
                     <div style="display: flex; justify-content: space-between">
                         <h5>Application and Os images</h5>
-                        <input style="visibility: hidden" id="OS" name="OS" type="text" />
+                        <input style="visibility: hidden" id="OS" name="OS" type="text"/>
                     </div>
                     <div class="input-group">
                         <div class="input-group-append">
@@ -94,7 +63,7 @@
                                     data-toggle="dropdown" aria-expanded="false" id="ChooseOS">Choose OS
                             </button>
                             <div class="dropdown-menu">
-                                <a onclick="UbuntuClick()" class="dropdown-item" >Ubuntu</a>
+                                <a onclick="UbuntuClick()" class="dropdown-item">Ubuntu</a>
                                 <a onclick="CentClick()" class="dropdown-item">CentOS</a>
                             </div>
                         </div>
@@ -113,88 +82,100 @@
                             <br>
                         </div>
                         <div>
-                            <input name="Memory" type="text" class="form-control" placeholder="Memory" aria-label="Memory"
+                            <input name="Memory" type="text" class="form-control" placeholder="Memory"
+                                   aria-label="Memory"
                                    aria-describedby="basic-addon1">
                         </div>
 
                         <div>
-                            <br>
+                            <input name="SSHKey" id="SSHKey" type="text" style="visibility: hidden">
                             <h5>SSH Key</h5>
-                            <input name="SSK" id="SSK" type="text" style="visibility: hidden">
                         </div>
 
-                        <div>
+                        <div style="display: flex">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                <button id="btSSHKey" class="btn btn-outline-secondary dropdown-toggle" type="button"
                                         data-toggle="dropdown" aria-expanded="false">Choose
                                 </button>
                                 <div class="dropdown-menu">
-                                <c:forEach items="${SSHKeys}" var="c">
-
-                                        <a name="" class="dropdown-item" onclick="SSHKey(${c.id})">${c.nameKey}</a>
-
-                                </c:forEach>
+                                    <a name="" class="dropdown-item" onclick="SSKeyList()">SSH Key</a>
+                                    <a name="" class="dropdown-item" onclick="Password()">Password</a>
                                 </div>
                             </div>
-                        </div>
-
-                        <br>
-
-                        <div style="display: flex; justify-content: space-between">
-                            <h5>Termination protection</h5>
-                            <input name="terminate" id="terminate" style="visibility: hidden"/>
-                        </div>
-                        <div>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-expanded="false" id="ChooseTer">Choose
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a name="Termination" onclick="enable()" class="dropdown-item">Enable</a>
-                                    <a name="Termination" onclick="disable()" class="dropdown-item">Disable</a>
-                                </div>
+                            <div id="textPassword" style="display: none; padding-left: 30px" align="center">
+                                <span style="padding-top: 9px"><h6>Your default password is: defaultpassword</h6></span>
                             </div>
-                        </div>
 
-                        <div>
-                            <br>
-                            <h5>Network</h5>
-                            <input name="Network" id="Network" type="text" style="visibility: hidden">
-                        </div>
-
-                        <div>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-expanded="false">Choose
+                            <div id="SSHKeyList" class="input-group-append" style="padding-left: 30px; display: none">
+                                <button id="btSSHKeyList" class="btn btn-outline-secondary dropdown-toggle"
+                                        type="button"
+                                        data-toggle="dropdown" aria-expanded="false">Choose SSHKey
                                 </button>
                                 <div class="dropdown-menu">
-                                    <c:forEach items="${Networks}" var="c">
-
-                                        <a name="" class="dropdown-item" onclick="Network(${c.id})">${c.nameNetwork}</a>
-
+                                    <c:forEach items="${SSHKeys}" var="c">
+                                        <a name="" class="dropdown-item"
+                                           onclick="ChooseSSHKey(${c.id},${c.nameKey})">${c.nameKey}</a>
                                     </c:forEach>
                                 </div>
                             </div>
+
                         </div>
-
-
-                        <div>
-                            <br>
-                            <h6>Userdata</h6>
-                        </div>
-                        <div>
-
-                            <textarea name="UserData" rows="8" cols="50">
-                             </textarea>
+                    </div>
+                    <br>
+                    <div style="display: flex; justify-content: space-between">
+                        <h5>Termination protection</h5>
+                        <input name="terminate" id="terminate" style="visibility: hidden"/>
+                    </div>
+                    <div>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-expanded="false" id="ChooseTer">Choose
+                            </button>
+                            <div class="dropdown-menu">
+                                <a name="Termination" onclick="enable()" class="dropdown-item">Enable</a>
+                                <a name="Termination" onclick="disable()" class="dropdown-item">Disable</a>
+                            </div>
                         </div>
                     </div>
 
-                    <div align="right">
-                        <a href="${pageContext.request.contextPath}/Main/Instance"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background-color: darkgrey; width: 150px; height: 45px; color: black">Exit</a>
+                    <div>
+                        <input name="Network" id="Network" type="text" style="visibility: hidden">
+                        <h5>Network</h5>
+                    </div>
 
-                        <button type="submit" style="background-color: darkorange; width: 150px; height: 45px;">Launch</button>
+                    <div>
+                        <div class="input-group-append">
+                            <button id="btNetwork" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-expanded="false">Choose
+                            </button>
+                            <div class="dropdown-menu">
+                                <c:forEach items="${Networks}" var="c">
+
+                                    <a name="" class="dropdown-item" onclick="Network('${c.id}','${c.nameNetwork}')">${c.nameNetwork}</a>
+
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <br>
+                        <h6>Userdata</h6>
+                    </div>
+                    <div>
+
+                            <textarea name="UserData" rows="8" cols="50">
+                             </textarea>
+                    </div>
+
+                    <div align="right">
+
+                        <a class="btn btn-outline-danger" href="${pageContext.request.contextPath}/Main/Instance" role="button">Cancel</a>
+                        <button type="submit" class="btn btn-primary" style="width: 150px;">
+                            Launch Instance
+                        </button>
+
                     </div>
                 </form>
             </div>
@@ -203,28 +184,47 @@
 </div>
 </body>
 <script>
-    function UbuntuClick(){
+    function UbuntuClick() {
         document.getElementById("OS").value = "1"
         document.getElementById("ChooseOS").innerText = "Ubuntu";
     }
-    function CentClick(){
+
+    function CentClick() {
         document.getElementById("OS").value = "2";
         document.getElementById("ChooseOS").innerText = "CentOS";
     }
-    function enable(){
+
+    function enable() {
         document.getElementById("terminate").value = "1"
         document.getElementById("ChooseTer").innerText = "Enable";
     }
-    function disable(){
+
+    function disable() {
         document.getElementById("terminate").value = "2"
         document.getElementById("ChooseTer").innerText = "Disable";
     }
-    function SSHKey(i){
-        document.getElementById("SSK").value = i;
+
+    function Network(i, name) {
+        document.getElementById("btNetwork").innerText = name;
+        document.getElementById("Network").value = i;
     }
 
-    function Network(i){
-        document.getElementById("Network").value = i;
+    function SSKeyList() {
+        document.getElementById("btSSHKey").innerText = 'SSHKey';
+        document.getElementById("textPassword").style.display = 'none';
+        document.getElementById("SSHKeyList").style.display = 'flex';
+    }
+
+    function Password() {
+        document.getElementById("btSSHKey").innerText = 'Password';
+        document.getElementById("SSHKeyList").style.display = 'none';
+        document.getElementById("textPassword").style.display = 'flex';
+        document.getElementById("SSHKey").value = 0;
+    }
+
+    function ChooseSSHKey(id, name) {
+        document.getElementById("btSSHKeyList").innerText = name;
+        document.getElementById("SSHKey").value = id;
     }
 </script>
 </html>

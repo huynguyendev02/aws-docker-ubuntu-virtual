@@ -48,48 +48,17 @@
 
 <div class="container-fluid mt-3">
     <div class="row">
-        <div class="col-sm-3">
-            <div class="card">
-                <div class="card-header">
-                    Featured
-                </div>
-                <div class="card-body">
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Instance"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Instance</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Snapshot"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Snapshot</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/SSH" class="btn btn-primary btn-lg active bt"
-                           role="button" aria-pressed="true" style="background: white; width: 100%; color: black">SSH
-                            Key</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Network" class="btn btn-primary btn-lg active bt"
-                           role="button" aria-pressed="true" style="background: white; width: 100%; color: black">Network
-                            </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <jsp:include page="../partial/Left.jsp"></jsp:include>
         <div class="col-sm-9">
             <div class="card-header mr-2" style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between">
                 <div style="display: flex; justify-content: space-between">
-                    <h2>Network</h2>
+                    <h4>Network</h4>
                 </div>
                 <div style="width: 60%">
                     <div class="dropdown" style="width: 100%" align="right">
-                        <a href="${pageContext.request.contextPath}/Main/Network/Create"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background-color: darkorange; width: 150px; height: 45px; color: black">Create</a>
+
+                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/Main/Network/Create" role="button"style="width: 150px" >Create Network</a>
+
                     </div>
 
                 </div>

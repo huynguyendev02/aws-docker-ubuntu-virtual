@@ -23,36 +23,12 @@
 
 <div class="container-fluid mt-3">
   <div class="row">
-    <div class="col-sm-3">
-      <div class="card">
-        <div class="card-header">
-          Featured
-        </div>
-        <div class="card-body">
-          <div>
-            <a href="${pageContext.request.contextPath}/Main/Instance" class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true" style="background: white; width: 100%; color: black">Instance</a>
-
-          </div>
-          <div>
-            <a href="${pageContext.request.contextPath}/Main/Snapshot" class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true" style="background: white; width: 100%; color: black">Snapshot</a>
-
-          </div>
-          <div>
-            <a href="${pageContext.request.contextPath}/Main/SSH" class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true" style="background: white; width: 100%; color: black">SSH Key</a>
-
-          </div>
-          <div>
-            <a href="${pageContext.request.contextPath}/Main/Network" class="btn btn-primary btn-lg active bt"
-               role="button" aria-pressed="true" style="background: white; width: 100%; color: black">Network
-            </a>
-          </div>
-
-        </div>
-      </div>
-    </div>
+    <jsp:include page="../partial/Left.jsp"></jsp:include>
     <div class="col-sm-9">
       <div class="card-header mr-2" style="border-style: solid; border-width: 1px">
-        <span id="home"> Snapshot </span>
+        <span id="home">
+          <h4>Snapshot</h4>
+        </span>
       </div>
       <div class="card-body mr-2" style="border-style: solid; border-width: 1px">
         Coming Soon !

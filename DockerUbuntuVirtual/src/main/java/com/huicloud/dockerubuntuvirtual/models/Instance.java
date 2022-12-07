@@ -14,6 +14,23 @@ public class Instance {
     int imageId;
     String state;
     int keyId;
+    int terminate;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public int getTerminate() {
+        return terminate;
+    }
+
+    public void setTerminate(int terminate) {
+        this.terminate = terminate;
+    }
 
     public Instance(int id, String nameInstance, double cpus, double memory, int port, int networkId, int userId, int imageId, String state, int keyId) {
         this.id = id;

@@ -11,6 +11,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        a.disabled {
+            pointer-events: none;
+            cursor: default;
+        }
+    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -45,59 +51,23 @@
 <%--    </div>--%>
 <%--</nav>--%>
 <jsp:include page="./../partial/Navication.jsp"></jsp:include>
-<div class="container-fluid mt-3">
+<div class="container-fluid mt-3 ">
     <div class="row">
-        <div class="col-sm-3">
-            <div class="card">
-                <div class="card-header">
-                    Featured
-                </div>
-                <div class="card-body">
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Instance"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Instance</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Snapshot"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background: white; width: 100%; color: black">Snapshot</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/SSH" class="btn btn-primary btn-lg active bt"
-                           role="button" aria-pressed="true" style="background: white; width: 100%; color: black">SSH
-                            Key</a>
-
-                    </div>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/Main/Network" class="btn btn-primary btn-lg active bt"
-                           role="button" aria-pressed="true" style="background: white; width: 100%; color: black">Network
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <jsp:include page="../partial/Left.jsp"></jsp:include>
         <div class="col-sm-9">
             <div class="card-header mr-2" style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between">
                 <div style="display: flex; justify-content: space-between">
-                    <h2>Instance</h2>
-                    <h10 id="idInstance" style="visibility: hidden"></h10>
+                    <h4>Instance</h4>
                 </div>
                 <div style="width: 60%">
                     <div class="dropdown" style="width: 100%" align="right">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style=" height: 45px;">
-                            Choose state
-                        </button>
-                        <a href="${pageContext.request.contextPath}/Main/Instance/Launch"
-                           class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true"
-                           style="background-color: darkorange; width: 150px; height: 45px; color: black">Launch</a>
+
+                        <button id="action" type="button" data-toggle="dropdown" class="btn btn-outline-dark dropdown-toggle" disabled>Actions</button>
+                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/Main/Instance/Launch" role="button"style="width: 150px" >Launch Instance</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Stop</a>
-                            <a class="dropdown-item" href="#">Start</a>
-                            <a class="dropdown-item" href="#">Terminate</a>
+                            <a id="start" class="dropdown-item" href="#">Start</a>
+                            <a  id="stop" class="dropdown-item" href="#">Stop</a>
+                            <a  id="terminate"class="dropdown-item" href="#">Terminate</a>
                         </div>
                     </div>
 
@@ -107,7 +77,7 @@
             <div class="card-body mr-2" style="border-style: solid; border-width: 1px">
                 <table style="width: 100%">
                     <tr style="background-color: beige" align="center">
-                        <td>Choose</td>
+                        <td></td>
                         <td>ID</td>
                         <td>Name</td>
                         <td>State</td>
@@ -122,7 +92,7 @@
                             <td><input name="choose" type="radio" onclick="choose(${c.id})" value="Yes"/></td>
                             <td>${c.id}</td>
                             <td>${c.nameInstance.split(0)[1]}</td>
-                            <td>${c.state}</td>
+                            <td id="state">${c.state}</td>
                             <td>${c.serverIp()}</td>
                             <td>${c.getport()}</td>
                             <td>${c.cpus}</td>
@@ -136,7 +106,18 @@
 </div>
 <script>
     function choose(id){
-        document.getElementById("idInstance").innerText = id
+        document.getElementById("start").classList.remove("disabled");
+        document.getElementById("stop").classList.remove("disabled");
+
+        // document.getElementById("idInstance").innerText = id
+        document.getElementById("action").disabled = false
+        if (document.getElementById("state").innerText=='Running') {
+            document.getElementById("start").classList.add("disabled");
+        }
+        if (document.getElementById("state").innerText=='Stopped') {
+            document.getElementById("stop").classList.add("disabled");
+        }
+
     }
 </script>
 </body>

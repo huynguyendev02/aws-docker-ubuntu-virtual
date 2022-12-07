@@ -205,7 +205,7 @@
       <br>
       <div class="field-set">
         </span>
-        <input name="newUsername" class="form-input" id="txt-input" type="text" placeholder="UserName" required>
+        <input name="newUsername" class="form-input" id="txt-input" type="text" placeholder="Username" required>
         <br>
         <input name="newPassword" class="form-input" id="pwd"  type="password" placeholder="Password" required>
         <br>

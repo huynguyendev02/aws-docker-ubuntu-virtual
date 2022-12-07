@@ -196,7 +196,7 @@
       <br>
       <div class="field-set">
         </span>
-        <input name="username" class="form-input" id="txt-input" type="text" placeholder="@UserName" required>
+        <input name="username" class="form-input" id="txt-input" type="text" placeholder="Username" required>
         <br>
         <input class="form-input" id="pwd" name="password" type="password" placeholder="Password" required>
         <br>

@@ -200,7 +200,7 @@
             <div class="field-set">
                 <img src="./pictures/Logo.png" style="width: 500px">
             </div>
-            <div class="other" style="display: flex; justify-content: end; align-items: flex-end">
+            <div class="other" style="display: flex; justify-content: space-evenly; align-items: flex-end;">
                 <a href="${pageContext.request.contextPath}/Home/Login" class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true" style="background: #B8F2E6; width: 100px; color: black">Log In</a>
                 <a href="${pageContext.request.contextPath}/Home/Register" class="btn btn-primary btn-lg active bt" role="button" aria-pressed="true" style="background: #B8F2E6; width: 100px; color: black">Register</a>
             </div>

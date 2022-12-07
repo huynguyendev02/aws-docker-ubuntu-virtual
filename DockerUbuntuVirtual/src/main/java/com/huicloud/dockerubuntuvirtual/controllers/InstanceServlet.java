@@ -62,8 +62,9 @@ public class InstanceServlet extends HttpServlet {
                 double cpus = Double.parseDouble(request.getParameter("CPUS"));
                 double mem =  Double.parseDouble(request.getParameter("Memory"));
                 String terminateState = request.getParameter("terminate");
-                int sshId =Integer.parseInt(request.getParameter("SSK")) ;
-                int netId = Integer.parseInt(request.getParameter("Network"));
+                System.out.print(Integer.parseInt(request.getParameter("SSHKey")));
+                int sshId =Integer.parseInt(request.getParameter("SSHKey")) ;
+                int netId  =Integer.parseInt(request.getParameter("Network"));
 
                 InstanceService.createImage(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
                 List<Instance> listIns =InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
