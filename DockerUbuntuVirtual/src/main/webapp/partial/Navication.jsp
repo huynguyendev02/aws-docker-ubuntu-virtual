@@ -1,6 +1,4 @@
-
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="#">
     <i class="fa fa-cloud fa-2x" aria-hidden="true"></i>
   </a>
@@ -9,12 +7,12 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex; justify-content: space-between">
-    <h5>
+    <h5 style="color: white">
       Hui & Hiu Cloud
     </h5>
     <h5 class="col-lg-2">
       <div class="input-group-append" style="padding-top: 10px">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button"data-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-outline-light dropdown-toggle" type="button"data-toggle="dropdown" aria-expanded="false">
           <span id="Username">
             Account Settings
           </span>

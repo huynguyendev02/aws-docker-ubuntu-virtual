@@ -25,17 +25,17 @@
 </head>
 <body>
 <jsp:include page="./../../partial/Navication.jsp"></jsp:include>
-<div class="container-fluid mt-3">
+<div class="container-fluid ">
     <div class="row">
         <jsp:include page="../../partial/Left.jsp"></jsp:include>
-        <div class="col-sm-9">
-            <div class="card-header mr-2" style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between">
-                <div><h2>Create SSH</h2></div>
+        <div class="col-sm-10 m-0 p-0">
+            <div class="card-header" style="display: flex; justify-content: space-between">
+                <div><h4>Create SSH</h4></div>
                 <div style="width: 60%">
 
                 </div>
             </div>
-            <div class="card-body mr-2" style="border-style: solid; border-width: 1px">
+            <div class="card-body ">
                 <form action="" method="post">
                     <div class="input-group flex-nowrap">
                         <div class="input-group-prepend">

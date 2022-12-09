@@ -8,7 +8,9 @@ import com.huicloud.dockerubuntuvirtual.services.InstanceService;
 import com.huicloud.dockerubuntuvirtual.services.NetworkService;
 import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
 import com.huicloud.dockerubuntuvirtual.services.SnapshotService;
+import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
+import org.sql2o.Connection;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -16,12 +18,10 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "CreateServlet", value = "/Main/Instance/*")
-public class InstanceServlet extends HttpServlet {
+@WebServlet(name = "SnapshotServlet", value = "/Main/Snapshot/*")
+public class SnapshotServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
         String url = request.getPathInfo();
         HttpSession session = request.getSession();
         if (url == null || url.equals("/")) {
@@ -29,21 +29,24 @@ public class InstanceServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-
-                List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-                request.setAttribute("instances", list);
-                ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                List<Snapshot> listSnaps = SnapshotService.findAll();
+                request.setAttribute("Snapshots", listSnaps);
+                ServerUtils.foward("/viewMain/Snap.jsp", request, response);
                 break;
-            case "/Launch":
+            case "/LaunchInstanceFromSnapshot":
+                String idSnap = request.getParameter("IdSnapshot");
+
+                Snapshot snap = new Snapshot(1, "CentOS ", 12, 12);
+                request.setAttribute("Snapshot", snap);
+
+
                 List<SSHKey> list3 = SSHKeyService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("SSHKeys", list3);
-
-
                 List<Network> list4 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("Networks", list4);
-                ServerUtils.foward("/viewMain/viewInstance/Launch.jsp", request, response);
-                break;
 
+                ServerUtils.foward("/viewMain/viewSnapshot/LaunchSnapshot.jsp", request, response);
+                break;
             default:
                 break;
         }
@@ -51,7 +54,6 @@ public class InstanceServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         String url = request.getPathInfo();
         HttpSession session = request.getSession();
         if (url == null || url.equals("/")) {
@@ -59,30 +61,19 @@ public class InstanceServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-                String IdInstance = request.getParameter("IdInstance");
-                String IdAction = request.getParameter("IdAction");
-                String SnapshotName = request.getParameter("SnapshotName");
+                String idSnap = request.getParameter("IdSnapshot");
+                Snapshot snap = new Snapshot(1, "CentOS", 12, 12);
+                request.setAttribute("Snapshot", snap);
 
-                String check = request.getParameter("State");
-                if (check.equals("0")){
 
-                    System.out.println(IdInstance);
-                    System.out.println(IdAction);
-
-                    List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-                    request.setAttribute("instances", list);
-                    ServerUtils.foward("/viewMain/Instance.jsp", request, response);
-                }
-                else {
-                    System.out.println(IdInstance);
-                    System.out.println(SnapshotName);
-                    List<Snapshot> listSnaps = SnapshotService.findAll();
-                    request.setAttribute("Snapshots", listSnaps);
-                    ServerUtils.foward("/viewMain/Snap.jsp", request, response);
-                }
-
+                List<SSHKey> list3 = SSHKeyService.findAllById((Integer) session.getAttribute("userId"));
+                request.setAttribute("SSHKeys", list3);
+                List<Network> list4 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
+                request.setAttribute("Networks", list4);
+                ServerUtils.foward("/viewMain/viewSnapshot/LaunchSnapshot.jsp", request, response);
                 break;
-            case "/Launch":
+            case "/LaunchInstanceFromSnapshot":
+
                 String nameIns = request.getParameter("NameInstance");
                 int osId =   Integer.parseInt(request.getParameter("OS")) ;
                 double cpus = Double.parseDouble(request.getParameter("CPUS"));
@@ -90,13 +81,20 @@ public class InstanceServlet extends HttpServlet {
                 String terminateState = request.getParameter("terminate");
                 System.out.print(Integer.parseInt(request.getParameter("SSHKey")));
                 int sshId =Integer.parseInt(request.getParameter("SSHKey")) ;
-                int netId  =Integer.parseInt(request.getParameter("Network"));
+//                int netId  =Integer.parseInt(request.getParameter("Network"));
 
-                InstanceService.createImage(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
-                List<Instance> listIns =InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
+                System.out.println(nameIns);
+                System.out.println(osId);
+                System.out.println(cpus);
+                System.out.println(mem);
+                System.out.println(terminateState);
+                System.out.println(sshId);
+//                System.out.println(netId);
 
-                request.setAttribute("instances", listIns);
-                ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+
+                List<Instance> listInstances = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
+                request.setAttribute("instances", listInstances);
+                response.sendRedirect(request.getContextPath() + "/Main/Instance");
                 break;
             default:
                 break;

@@ -44,11 +44,12 @@
 <%--</nav>--%>
 <jsp:include page="./../partial/Navication.jsp"></jsp:include>
 
-<div class="container-fluid mt-3">
+<div class="container-fluid ">
   <div class="row">
     <jsp:include page="../partial/Left.jsp"></jsp:include>
-    <div class="col-sm-9">
-      <div class="card-header mr-2" style="border-style: solid; border-width: 1px; display: flex; justify-content: space-between" >
+    <div class="col-sm-10 m-0 p-0">
+      <div class="card-header"
+           style=" display: flex; justify-content: space-between; border-style: none">
 
           <h4>SSH Key</h4>
 
@@ -58,9 +59,9 @@
 
         </div>
       </div>
-      <div class="card-body mr-2" style="border-style: solid; border-width: 1px">
+      <div class="card-body">
         <table style="width: 100%">
-          <tr style="background-color: beige" align="center">
+          <tr style="background-color: lightgray" align="center">
             <td>ID</td>
             <td>Name</td>
             <td>Algorithm</td>
