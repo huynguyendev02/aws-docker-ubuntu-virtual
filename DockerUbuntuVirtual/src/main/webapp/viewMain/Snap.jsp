@@ -58,9 +58,9 @@
                             <td>&emsp;</td>
                             <td>ID</td>
                             <td>Name</td>
-                            <td>Image</td>
+                            <td>Base Instance</td>
                             <td>Server</td>
-                            <td>Create at</td>
+                            <td>Created at</td>
                             <td>&emsp;</td>
 
                         </tr>
@@ -71,11 +71,11 @@
                                 </td>
                                 <td>${c.id}</td>
                                 <td>${c.nameSnapshot}</td>
-                                <td>${c.imageId}</td>
-                                <td>Server</td>
-                                <td>Hôm nay</td>
+                                <td>${c.getinstanceId()}</td>
+                                <td>${c.IPServer}</td>
+                                <td>${c.createdAt}</td>
                                 <td>
-                                    <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b><Delete></Delete></b>
+                                    <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>
                                     </button>
                                 </td>
                             </tr>

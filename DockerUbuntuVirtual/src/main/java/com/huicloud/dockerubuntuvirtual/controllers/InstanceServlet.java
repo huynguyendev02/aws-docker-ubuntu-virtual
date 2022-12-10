@@ -59,23 +59,28 @@ public class InstanceServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-                String IdInstance = request.getParameter("IdInstance");
-                String IdAction = request.getParameter("IdAction");
-                String SnapshotName = request.getParameter("SnapshotName");
+                int idInstance = Integer.parseInt(request.getParameter("IdInstance"));
+                int idAction = request.getParameter("IdAction").isEmpty() ? 0:Integer.parseInt(request.getParameter("IdAction"));
 
+                String snapshotName = request.getParameter("SnapshotName");
+                System.out.print(snapshotName);
                 String check = request.getParameter("State");
+                // 0 = change state instance
+                // !=0  => create snapshot
                 if (check.equals("0")){
-
-                    System.out.println(IdInstance);
-                    System.out.println(IdAction);
+                    if (idAction==1)
+                        InstanceService.startIns(idInstance);
+                    if (idAction==2)
+                        InstanceService.stopIns(idInstance);
+                    if (idAction==3)
+                        InstanceService.terminateIns(idInstance);
 
                     List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                     request.setAttribute("instances", list);
                     ServerUtils.foward("/viewMain/Instance.jsp", request, response);
                 }
                 else {
-                    System.out.println(IdInstance);
-                    System.out.println(SnapshotName);
+                    SnapshotService.createSnap(snapshotName, idInstance);
                     List<Snapshot> listSnaps = SnapshotService.findAll();
                     request.setAttribute("Snapshots", listSnaps);
                     ServerUtils.foward("/viewMain/Snap.jsp", request, response);
@@ -92,7 +97,7 @@ public class InstanceServlet extends HttpServlet {
                 int sshId =Integer.parseInt(request.getParameter("SSHKey")) ;
                 int netId  =Integer.parseInt(request.getParameter("Network"));
 
-                InstanceService.createImage(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
+                InstanceService.createInstance(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
                 List<Instance> listIns =InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
 
                 request.setAttribute("instances", listIns);

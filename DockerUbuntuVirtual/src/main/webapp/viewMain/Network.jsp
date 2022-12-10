@@ -69,15 +69,15 @@
                 <table style="width: 100%">
                     <tr style="background-color: lightgray" align="center">
                         <td>ID</td>
-                        <td>NetworkName</td>
-                        <td>ID User</td>
+                        <td>Cluster Name</td>
+                        <td>IP Server</td>
                     </tr>
 
                     <c:forEach items="${Networks}" var="c">
                         <tr align="center">
                             <td>${c.id}</td>
                             <td>${c.nameNetwork}</td>
-                            <td>${c.userId}</td>
+                            <td>${c.IPServer}</td>
                         </tr>
                     </c:forEach>
                 </table>

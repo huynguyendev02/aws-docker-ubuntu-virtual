@@ -1,5 +1,7 @@
 package com.huicloud.dockerubuntuvirtual.models;
 
+import com.huicloud.dockerubuntuvirtual.services.ServerServices;
+
 public class Network {
     int id;
     String nameNetwork;
@@ -43,5 +45,8 @@ public class Network {
 
     public void setServerId(int serverId) {
         this.serverId = serverId;
+    }
+    public String getIPServer(){
+        return ServerServices.findServerById(this.serverId).ipServer;
     }
 }

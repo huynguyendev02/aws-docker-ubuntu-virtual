@@ -1,5 +1,6 @@
 package com.huicloud.dockerubuntuvirtual.services;
 
+import com.huicloud.dockerubuntuvirtual.models.Image;
 import com.huicloud.dockerubuntuvirtual.models.Instance;
 import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.models.Server;
@@ -10,9 +11,10 @@ import org.sql2o.Connection;
 import java.util.List;
 
 public class InstanceService {
-    public static void createImage(String nameInstance, double cpus, double memory, int networkId, int userId, int imageId, int keyId){
+    public static void createInstance(String nameInstance, double cpus, double memory, int networkId, int userId, int imageId, int keyId){
         Network net = NetworkService.findNetworkById(networkId);
         Server ser = ServerServices.findServerById(net.getServerId());
+        Image image = ImageService.findImageById(imageId);
 
        List<Instance> instances;
        String query1 = "select * from instance";
@@ -31,10 +33,22 @@ public class InstanceService {
            }
            port+=1;
        }
-       String commandUbuntuKey = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage();
-       String commandUbuntuPass = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"pass";
-       String commandCentosKey = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
-       String commandCentosPass = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"pass /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+       String commandUbuntuKey="", commandUbuntuPass="", commandCentosKey="", commandCentosPass="";
+       if (imageId <3) {
+           commandUbuntuKey = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage();
+           commandUbuntuPass = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"pass";
+           commandCentosKey = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+           commandCentosPass = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged huynguyendev02/docker-virtual:"+ImageService.findImageById(imageId).getNameImage()+"pass /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+       } else
+       {
+           if (image.getType()==1) {
+               commandUbuntuKey = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" "+image.getNameImage();
+               commandUbuntuPass = commandUbuntuKey;
+           } else {
+               commandCentosKey = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged "+image.getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
+               commandCentosPass =commandCentosKey;
+           }
+       }
 
        if (keyId==0) {
            if (imageId ==1)
@@ -66,9 +80,50 @@ public class InstanceService {
                     .getKey();
         }
     }
+    public static Instance findInsById(int idInstance){
+        String query1 = "select * from instance where id=:id";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return con.createQuery(query1)
+                    .addParameter("id",idInstance)
+                    .executeAndFetchFirst(Instance.class);
+        }
+    }
 
+    public static void startIns(int idInstance) {
+        Instance ins = InstanceService.findInsById(idInstance);
+        HostSSHUtils.executeCommand("docker start "+ins.getNameInstance());
 
-//    =======================================
+        String query1 = "update instance set state= :state where id= :id";
+        try (Connection con = ConnectionUtils.openConnection()){
+            con.createQuery(query1)
+                    .addParameter("id",idInstance)
+                    .addParameter("state", "Running")
+                    .executeUpdate();
+        }
+    }
+    public static void stopIns(int idInstance) {
+        Instance ins = InstanceService.findInsById(idInstance);
+        HostSSHUtils.executeCommand("docker stop "+ins.getNameInstance());
+        String query1 = "update instance set state= :state where id= :id";
+        try (Connection con = ConnectionUtils.openConnection()){
+            con.createQuery(query1)
+                    .addParameter("id",idInstance)
+                    .addParameter("state", "Stopped")
+                    .executeUpdate();
+        }
+    }
+    public static void terminateIns(int idInstance) {
+        Instance ins = InstanceService.findInsById(idInstance);
+        HostSSHUtils.executeCommand("docker stop "+ins.getNameInstance());
+        HostSSHUtils.executeCommand("docker rm "+ ins.getNameInstance());
+        String query1 = "delete from instance where id= :id";
+        try (Connection con = ConnectionUtils.openConnection()){
+            con.createQuery(query1)
+                    .addParameter("id",idInstance)
+                    .executeUpdate();
+        }
+
+    }
     public static List<Instance> findAllByUserId(int userId) {
         String query1 = "select * from instance where userId=:userId";
         try (Connection con = ConnectionUtils.openConnection()){

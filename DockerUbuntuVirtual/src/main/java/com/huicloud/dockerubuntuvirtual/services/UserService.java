@@ -44,11 +44,12 @@ public class UserService {
 
         HostSSHUtils.executeCommand("mkdir /home/ubuntu/KEYSSH/"+username);
 
-        String query = "insert into user ( username, password ) values ( :username, :password )";
+        String query = "insert into user ( username, password , type) values ( :username, :password , :type)";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query,true)
                     .addParameter("username",username)
                     .addParameter("password",password)
+                    .addParameter("type",1)
                     .executeUpdate()
                     .getKey();
         }

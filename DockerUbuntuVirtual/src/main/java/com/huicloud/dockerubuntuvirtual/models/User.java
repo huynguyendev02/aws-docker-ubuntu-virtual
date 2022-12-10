@@ -5,6 +5,17 @@ public class User {
     String username;
     String password;
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    int type;
+
+
     public User(int id, String username, String password) {
         this.id = id;
         this.username = username;
@@ -33,5 +44,12 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public User(int id, String username, String password, int type) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.type = type;
     }
 }
