@@ -35,8 +35,8 @@
 <div class="container-fluid ">
     <div class="row">
         <jsp:include page="../partial/Left.jsp"></jsp:include>
-            <div class="col-sm-10 m-0 p-0">
-                <form action="" method="post" style="width: 100%">
+        <div class="col-sm-10 m-0 p-0">
+            <form action="" method="post" style="width: 100%">
                 <div class="card-header"
                      style=" display: flex; justify-content: space-between; border-style: none">
                     <div style="display: flex; justify-content: space-between">
@@ -50,7 +50,8 @@
                         <div style="width: 100%">
                             <div class="dropdown" style="width: 100%" align="right">
 
-                                <button id="btCreateSnap" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b>Make Snapshot</b> </button>
+                                <button id="btCreateImage" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b><i class="fa fa-windows" aria-hidden="true"></i>  Make Imange</b> </button>
+                                <button id="btCreateSnap" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b><i class="fa fa-tag" aria-hidden="true"></i> Make Snapshot</b> </button>
                                 </button>
                                 <button id="action" type="button" data-toggle="dropdown"
                                         class="btn btn-outline-dark dropdown-toggle" disabled>Actions
@@ -87,7 +88,7 @@
                         <c:forEach items="${instances}" var="c">
                             <tr align="center">
                                 <td><input name="hehe" type="radio"
-                                           onclick="choose(${c.id},'${c.nameInstance}')" value="Yes"/></td>
+                                           onclick="choose(${c.id},'${c.nameInstance}','${c.serverIp()}')" value="Yes"/></td>
                                 <td>${c.id}</td>
                                 <td>${c.nameInstance}</td>
                                 <td id="state">${c.state}</td>
@@ -101,7 +102,7 @@
                     </table>
 
                     <div id="tableCreateSnap" style="display: none">
-                        <div id="InstanceName"></div>
+                        <h6 id="InstanceName"></h6>
                         <br>
                         <div class="input-group flex-nowrap">
                             <div class="input-group-prepend">
@@ -116,9 +117,26 @@
                             <button type="submit" class="btn btn-success">Create</button>
                         </div>
                     </div>
+
+                    <div id="tableCreateImage" style="display: none">
+                        <h6 id="InstanceServer"></h6>
+                        <br>
+                        <div class="input-group flex-nowrap">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="tbCreateImage">ImageName</span>
+                            </div>
+                            <input name="ImageName" type="text" class="form-control" placeholder="ImageName"
+                                   aria-label="ImageName"
+                                   aria-describedby="addon-wrapping">
+                        </div>
+                        <br>
+                        <div align="right">
+                            <button type="submit" class="btn btn-success">Create</button>
+                        </div>
+                    </div>
                 </div>
-                </form>
-            </div>
+            </form>
+        </div>
     </div>
 </div>
 <script>
@@ -143,12 +161,13 @@
             document.getElementById("terminate").setAttribute("type", "submit")
         }
 
-    function choose(id, name) {
+    function choose(id, instanceName, serverName) {
         document.getElementById("IdInstance").value = id
+        document.getElementById("btCreateImage").disabled = false
         document.getElementById("btCreateSnap").disabled = false
         document.getElementById("action").disabled = false
-        document.getElementById("InstanceName").innerText = "InstanceName: " + name
-
+        document.getElementById("InstanceName").innerText = "InstanceName: " + instanceName
+        document.getElementById("InstanceServer").innerText = "Instance Server: " + serverName
 
         // document.getElementById("start").classList.remove("disabled");
         // document.getElementById("stop").classList.remove("disabled");
@@ -167,9 +186,22 @@
         document.getElementById("ipState").value = 1;
         document.getElementById("tableLaunchInstance").style.display = 'none'
         document.getElementById("btCreateSnap").style.display = 'none'
+        document.getElementById("btCreateImage").style.display = 'none'
         document.getElementById("action").style.display = 'none'
         document.getElementById("Launch").style.display = 'none'
+        document.getElementById("tableCreateImage").style.display = 'none'
         document.getElementById("tableCreateSnap").style.display = 'block'
+    }
+
+    document.getElementById("btCreateImage").onclick = function createImage() {
+        document.getElementById("ipState").value = 2;
+        document.getElementById("tableLaunchInstance").style.display = 'none'
+        document.getElementById("btCreateSnap").style.display = 'none'
+        document.getElementById("btCreateImage").style.display = 'none'
+        document.getElementById("action").style.display = 'none'
+        document.getElementById("Launch").style.display = 'none'
+        document.getElementById("tableCreateSnap").style.display = 'none'
+        document.getElementById("tableCreateImage").style.display = 'block'
     }
 </script>
 </body>

@@ -4,6 +4,7 @@ import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.models.Server;
 import com.huicloud.dockerubuntuvirtual.services.NetworkService;
 import com.huicloud.dockerubuntuvirtual.services.ServerServices;
+import com.huicloud.dockerubuntuvirtual.services.UserService;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.ServletException;
@@ -26,9 +27,14 @@ public class NetworkServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-                List<Network> list3 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
-                request.setAttribute("Networks", list3);
-                ServerUtils.foward("/viewMain/Network.jsp", request, response);
+                List<Network> listNetwork = NetworkService.findAllById((Integer) session.getAttribute("userId"));
+                request.setAttribute("Networks", listNetwork);
+                if (UserService.check() == 0){
+                    ServerUtils.foward("/viewAdmin/AdNetwork.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Network.jsp", request, response);
+                }
                 break;
             case "/Create":
                 List<Server> list4 = ServerServices.findAll();
@@ -51,11 +57,8 @@ public class NetworkServlet extends HttpServlet {
                 String nameNetwork = request.getParameter("nameNetwork");
 
                 NetworkService.addNetwork((Integer)session.getAttribute("userId"),nameNetwork, Integer.parseInt(serverId) );
-                List<Server> list4 = ServerServices.findAll();
-                request.setAttribute("Servers", list4);
-                ServerUtils.foward("/viewMain/viewNetwork/CreateNetwork.jsp", request, response);
+                response.sendRedirect(request.getContextPath() + "/Main/Network");
                 break;
-
             default:
                 break;
         }

@@ -4,10 +4,7 @@ import com.huicloud.dockerubuntuvirtual.models.Instance;
 import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.models.SSHKey;
 import com.huicloud.dockerubuntuvirtual.models.Snapshot;
-import com.huicloud.dockerubuntuvirtual.services.InstanceService;
-import com.huicloud.dockerubuntuvirtual.services.NetworkService;
-import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
-import com.huicloud.dockerubuntuvirtual.services.SnapshotService;
+import com.huicloud.dockerubuntuvirtual.services.*;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.*;
@@ -29,18 +26,22 @@ public class InstanceServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-
-                List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-                request.setAttribute("instances", list);
-                ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                List<Instance> listInstances = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
+                request.setAttribute("instances", listInstances);
+                if (UserService.check()==0){
+                    ServerUtils.foward("/viewAdmin/AdInstance.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                }
                 break;
             case "/Launch":
                 List<SSHKey> list3 = SSHKeyService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("SSHKeys", list3);
 
-
                 List<Network> list4 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("Networks", list4);
+
                 ServerUtils.foward("/viewMain/viewInstance/Launch.jsp", request, response);
                 break;
 
@@ -61,13 +62,18 @@ public class InstanceServlet extends HttpServlet {
             case "/":
                 int idInstance = Integer.parseInt(request.getParameter("IdInstance"));
                 int idAction = request.getParameter("IdAction").isEmpty() ? 0:Integer.parseInt(request.getParameter("IdAction"));
-
+//                Tên của Snap mới tạo
                 String snapshotName = request.getParameter("SnapshotName");
-                System.out.print(snapshotName);
+//                Tên của Image mới tạo
+                String imageName = request.getParameter("ImageName");
+
                 String check = request.getParameter("State");
-                // 0 = change state instance
-                // !=0  => create snapshot
+
+//                0: tạo Instace mới, quay lại trang Instance
+//                1:  tạo Sanp mới từ Instance mới chọn, quay lại trang Snap
+//                2:  tạo Image mới từ Instance mới chọn, quay lại trang Image
                 if (check.equals("0")){
+
                     if (idAction==1)
                         InstanceService.startIns(idInstance);
                     if (idAction==2)
@@ -75,15 +81,21 @@ public class InstanceServlet extends HttpServlet {
                     if (idAction==3)
                         InstanceService.terminateIns(idInstance);
 
-                    List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-                    request.setAttribute("instances", list);
-                    ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                    response.sendRedirect(request.getContextPath() + "/Main/Instance");
+
                 }
-                else {
+                if (check.equals("1")){
+
                     SnapshotService.createSnap(snapshotName, idInstance);
-                    List<Snapshot> listSnaps = SnapshotService.findAll();
-                    request.setAttribute("Snapshots", listSnaps);
-                    ServerUtils.foward("/viewMain/Snap.jsp", request, response);
+                    response.sendRedirect(request.getContextPath() + "/Main/Snapshot");
+
+                }
+                if (check.equals("2")){
+
+                    System.out.println(idInstance);
+                    System.out.println(imageName);
+
+                    response.sendRedirect(request.getContextPath() + "/Main/Image");
                 }
 
                 break;
@@ -98,10 +110,7 @@ public class InstanceServlet extends HttpServlet {
                 int netId  =Integer.parseInt(request.getParameter("Network"));
 
                 InstanceService.createInstance(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
-                List<Instance> listIns =InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-
-                request.setAttribute("instances", listIns);
-                ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                response.sendRedirect(request.getContextPath() + "/Main/Instance");
                 break;
             default:
                 break;

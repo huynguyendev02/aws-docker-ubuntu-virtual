@@ -1,10 +1,11 @@
 package com.huicloud.dockerubuntuvirtual.controllers;
 
 import com.huicloud.dockerubuntuvirtual.models.Instance;
+import com.huicloud.dockerubuntuvirtual.models.Network;
+import com.huicloud.dockerubuntuvirtual.models.Server;
 import com.huicloud.dockerubuntuvirtual.models.Snapshot;
-import com.huicloud.dockerubuntuvirtual.services.InstanceService;
+import com.huicloud.dockerubuntuvirtual.services.*;
 
-import com.huicloud.dockerubuntuvirtual.services.SnapshotService;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.*;
@@ -25,15 +26,43 @@ public class MainServlet extends HttpServlet {
             case "/Instance":
                 List<Instance> listInstances = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                 request.setAttribute("instances", listInstances);
-                ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                if (UserService.check()==0){
+                    ServerUtils.foward("/viewAdmin/AdInstance.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                }
                 break;
             case "/Snapshot":
                 List<Snapshot> listSnaps = SnapshotService.findAll();
                 request.setAttribute("Snapshots", listSnaps);
                 ServerUtils.foward("/viewMain/Snap.jsp", request, response);
                 break;
+            case "/Image":
+                ServerUtils.foward("/viewMain/Image.jsp", request, response);
+                break;
             case "/SSH":
                 ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
+                break;
+            case "/Network":
+                List<Network> listNetwork = NetworkService.findAllById((Integer) session.getAttribute("userId"));
+                request.setAttribute("Networks", listNetwork);
+                if (UserService.check()==0){
+                    ServerUtils.foward("/viewAdmin/AdNetwork.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Network.jsp", request, response);
+                }
+                break;
+            case "/Server":
+                List<Server> listServer = ServerServices.findAll();
+                request.setAttribute("Servers", listServer);
+                if (UserService.check()==0){
+                    ServerUtils.foward("/viewAdmin/AdServer.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Server.jsp", request, response);
+                }
                 break;
             default:
                 break;
@@ -53,9 +82,7 @@ public class MainServlet extends HttpServlet {
                 System.out.println(IdInstance);
                 System.out.println(IdAction);
 
-                List<Instance> list = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-                request.setAttribute("instances", list);
-                ServerUtils.foward("/viewMain/Instance.jsp", request, response);
+                response.sendRedirect(request.getContextPath() + "/Main/Instance");
                 break;
             case "/Snapshot":
                 String cc = request.getParameter("IdInstance");

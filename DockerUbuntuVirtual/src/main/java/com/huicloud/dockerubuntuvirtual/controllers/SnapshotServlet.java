@@ -4,10 +4,7 @@ import com.huicloud.dockerubuntuvirtual.models.Instance;
 import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.models.SSHKey;
 import com.huicloud.dockerubuntuvirtual.models.Snapshot;
-import com.huicloud.dockerubuntuvirtual.services.InstanceService;
-import com.huicloud.dockerubuntuvirtual.services.NetworkService;
-import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
-import com.huicloud.dockerubuntuvirtual.services.SnapshotService;
+import com.huicloud.dockerubuntuvirtual.services.*;
 import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 import org.sql2o.Connection;
@@ -31,7 +28,13 @@ public class SnapshotServlet extends HttpServlet {
             case "/":
                 List<Snapshot> listSnaps = SnapshotService.findAll();
                 request.setAttribute("Snapshots", listSnaps);
-                ServerUtils.foward("/viewMain/Snap.jsp", request, response);
+
+                if (UserService.check() == 0){
+                    ServerUtils.foward("/viewAdmin/AdSnap.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Snap.jsp", request, response);
+                }
                 break;
             case "/LaunchInstanceFromSnapshot":
                 String idSnap = request.getParameter("IdSnapshot");
@@ -61,16 +64,11 @@ public class SnapshotServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
+//                ID của Snap mới chọn
                 String idSnap = request.getParameter("IdSnapshot");
-                Snapshot snap = new Snapshot(1, "CentOS", 12, 12);
-                request.setAttribute("Snapshot", snap);
 
 
-                List<SSHKey> list3 = SSHKeyService.findAllById((Integer) session.getAttribute("userId"));
-                request.setAttribute("SSHKeys", list3);
-                List<Network> list4 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
-                request.setAttribute("Networks", list4);
-                ServerUtils.foward("/viewMain/viewSnapshot/LaunchSnapshot.jsp", request, response);
+                response.sendRedirect(request.getContextPath() + "/Main/Instance");
                 break;
             case "/LaunchInstanceFromSnapshot":
 
@@ -92,8 +90,6 @@ public class SnapshotServlet extends HttpServlet {
 //                System.out.println(netId);
 
 
-                List<Instance> listInstances = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-                request.setAttribute("instances", listInstances);
                 response.sendRedirect(request.getContextPath() + "/Main/Instance");
                 break;
             default:

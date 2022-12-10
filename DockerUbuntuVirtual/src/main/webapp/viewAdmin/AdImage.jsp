@@ -3,8 +3,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<jsp:useBean id="Snapshots" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Snapshot>"/>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,43 +38,54 @@
                 <div class="card-header"
                      style=" display: flex; justify-content: space-between; border-style: none">
                     <div style="display: flex; justify-content: space-between">
-                        <h4>Snapshot</h4>
+                        <h4>Image</h4>
                     </div>
 
                     <div style="width: 60%">
                         <div class="dropdown" style="width: 100%" align="right">
-                            <button id="Launch" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Restore</button>
+                            <button id="Launch" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Launch Instance</button>
                         </div>
                     </div>
                 </div>
-                <input name="IdSnapshot" id="IdSnapshot" type="text" style="display: none">
+                <input name="IdImage" id="IdImage" type="text" style="display: none">
                 <div class="card-body">
                     <table style="width: 100%">
                         <tr style="background-color: lightgray" align="center">
                             <td>&emsp;</td>
                             <td>ID</td>
                             <td>Name</td>
-                            <td>Image</td>
                             <td>Server</td>
-                            <td>Create at</td>
+                            <td>OS base</td>
+                            <td>SSH method</td>
                             <td>&emsp;</td>
-
+                        </tr>
+                        <tr  align="center">
+                            <td><input name="chooseInstance" type="radio" onclick="choose('1')" value="Yes"/></td>
+                            <td>1</td>
+                            <td>Name</td>
+                            <td>Server</td>
+                            <td>OS base</td>
+                            <td>SSH method</td>
+                            <td>
+                                <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>
+                                </button>
+                            </td>
                         </tr>
 
-                        <c:forEach items="${Snapshots}" var="c">
-                            <tr align="center">
-                                <td><input name="chooseInstance" type="radio" onclick="choose(${c.id})" value="Yes"/></td>
-                                <td>${c.id}</td>
-                                <td>${c.nameSnapshot}</td>
-                                <td>Image</td>
-                                <td>${c.IPServer}</td>
-                                <td>${c.createdAt}</td>
-                                <td>
-                                    <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>
-                                    </button>
-                                </td>
-                            </tr>
-                        </c:forEach>
+                        <%--                        <c:forEach items="${Snapshots}" var="c">--%>
+                        <%--                            <tr align="center">--%>
+                        <%--                                <td><input name="chooseInstance" type="radio" onclick="choose(${c.id})" value="Yes"/></td>--%>
+                        <%--                                <td>${c.id}</td>--%>
+                        <%--                                <td>${c.nameSnapshot}</td>--%>
+                        <%--                                <td>${c.imageId}</td>--%>
+                        <%--                                <td>Server</td>--%>
+                        <%--                                <td>Hôm nay</td>--%>
+                        <%--                                <td>--%>
+                        <%--                                    <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>--%>
+                        <%--                                    </button>--%>
+                        <%--                                </td>--%>
+                        <%--                            </tr>--%>
+                        <%--                        </c:forEach>--%>
                     </table>
                 </div>
             </form>
@@ -89,7 +98,7 @@
     }
 
     function choose(n) {
-        document.getElementById("IdSnapshot").value = n
+        document.getElementById("IdImage").value = n
         document.getElementById("Launch").style.visibility = 'visible'
     }
 

@@ -54,5 +54,8 @@ public class UserService {
                     .getKey();
         }
     }
-
+    //    Trả về 0 nếu là Admin, trả về 1 nếu là User
+    public static int check(){
+        return 1;
+    }
 }

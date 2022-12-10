@@ -30,7 +30,7 @@
         <jsp:include page="../../partial/Left.jsp"></jsp:include>
         <div class="col-sm-10 m-0 p-0">
             <div class="card-header" style="display: flex; justify-content: space-between">
-                <div><h4>Create SSH</h4></div>
+                <div><h4>Create SSH Key</h4></div>
                 <div style="width: 60%">
 
                 </div>

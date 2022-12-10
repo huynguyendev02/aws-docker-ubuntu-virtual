@@ -4,6 +4,7 @@ import com.huicloud.dockerubuntuvirtual.models.Instance;
 
 import com.huicloud.dockerubuntuvirtual.services.InstanceService;
 import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
+import com.huicloud.dockerubuntuvirtual.services.UserService;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.*;
@@ -31,7 +32,12 @@ public class SSHServlet extends HttpServlet {
         }
         switch (url){
             case "/":
-                ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
+                if (UserService.check() == 0){
+                    ServerUtils.foward("/viewAdmin/AdSsh.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
+                }
                 break;
             case "/Create":
                 ServerUtils.foward("/viewMain/viewSsh/CreateSsh.jsp", request, response);
@@ -81,8 +87,12 @@ public class SSHServlet extends HttpServlet {
         }
         switch (url){
             case "/":
-
-                ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
+                if (UserService.check() == 0){
+                    ServerUtils.foward("/viewAdmin/AdSsh.jsp", request, response);
+                }
+                else {
+                    ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
+                }
                 break;
             case "/Create":
                 ServletContext context = request.getServletContext();

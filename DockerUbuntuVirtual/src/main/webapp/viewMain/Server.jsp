@@ -1,9 +1,9 @@
-<%@ page import="com.huicloud.dockerubuntuvirtual.services.NetworkService" %>
-<%@ page import="com.huicloud.dockerubuntuvirtual.models.Network" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.services.ServerServices" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.models.Server" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<jsp:useBean id="Networks" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Network>"/>
+<jsp:useBean id="Servers" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Server>"/>
 
 
 <!DOCTYPE html>
@@ -34,31 +34,24 @@
             <div class="card-header"
                  style=" display: flex; justify-content: space-between; border-style: none">
                 <div style="display: flex; justify-content: space-between">
-                    <h4>Network</h4>
+                    <h4>Server</h4>
                 </div>
-                <div style="width: 60%">
-                    <div class="dropdown" style="width: 100%" align="right">
 
-                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/Main/Network/Create" role="button"style="width: 150px" >Create Network</a>
-
-                    </div>
-
-                </div>
             </div>
 
             <div class="card-body">
                 <table style="width: 100%">
-                    <tr style="background-color: lightgray" align="center">
-                        <td>ID</td>
-                        <td>NetworkName</td>
-                        <td>ID User</td>
+                    <tr style="background-color: lightgray" align="left">
+                        <td>ID Server</td>
+                        <td>IP Server</td>
+                        <td>State</td>
                     </tr>
 
-                    <c:forEach items="${Networks}" var="c">
-                        <tr align="center">
+                    <c:forEach items="${Servers}" var="c">
+                        <tr align="left">
                             <td>${c.id}</td>
-                            <td>${c.nameNetwork}</td>
-                            <td>${c.userId}</td>
+                            <td>${c.ipServer}</td>
+                            <td> State </td>
                         </tr>
                     </c:forEach>
                 </table>
