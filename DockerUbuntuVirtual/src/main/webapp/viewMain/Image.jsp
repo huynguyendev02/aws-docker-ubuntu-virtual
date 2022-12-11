@@ -50,7 +50,11 @@
                     </div>
                 </div>
                 <input name="IdImage" id="IdImage" type="text" style="display: none">
-                <input name="idAction" id="idAction" type="text" style="display: none">
+                <input name="IdAction" id="IdAction" type="text" style="display: none">
+                <input name="IdServer" id="IdServer" type="text" style="display: none">
+                <input name="IdOS" id="IdOS" type="text" style="display: none">
+                <input name="IdSSH" id="IdSSH" type="text" style="display: none">
+
                 <div class="card-body">
                     <table style="width: 100%">
                         <tr style="background-color: lightgray" align="center">
@@ -64,7 +68,7 @@
                         </tr>
                         <c:forEach items="${images}" var="c">
                             <tr  align="center">
-                                <td><input name="chooseInstance" type="radio" onclick="choose('${c.id}')" value="Yes"/></td>
+                                <td><input name="chooseInstance" type="radio" onclick="choose('${c.id}','${c.serverId}','${c.type}','${c.sshMethod}')" value="Yes"/></td>
                                 <td>${c.id}</td>
                                 <td>${c.nameImage}</td>
                                 <td>${c.IPSever}</td>
@@ -84,15 +88,18 @@
 </div>
 <script>
     function deleteClick(id) {
-        document.getElementById("idAction").value = 0;
+        document.getElementById("IdAction").value = 0;
         document.getElementById("IdImage").value = id;
     }
     function launch(){
-        document.getElementById("idAction").value = 1;
+        document.getElementById("IdAction").value = 1;
     }
 
-    function choose(n) {
-        document.getElementById("IdImage").value = n
+    function choose(idImage, idServer, idOS, idSSH) {
+        document.getElementById("IdImage").value = idImage
+        document.getElementById("IdServer").value = idServer
+        document.getElementById("IdOS").value = idOS
+        document.getElementById("IdSSH").value = idSSH
         document.getElementById("Launch").style.visibility = 'visible'
     }
 

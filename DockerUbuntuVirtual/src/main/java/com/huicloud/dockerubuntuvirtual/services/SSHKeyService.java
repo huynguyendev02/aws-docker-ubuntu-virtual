@@ -76,5 +76,10 @@ public class SSHKeyService {
         }
     }
 
-  
+    public static SSHKey findSSHKeyById(int id) {
+        String query = "select * from sshkey where id = :id";
+        try (Connection con = ConnectionUtils.openConnection()) {
+            return con.createQuery(query).addParameter("id",id).executeAndFetchFirst(SSHKey.class);
+        }
+    }
 }
