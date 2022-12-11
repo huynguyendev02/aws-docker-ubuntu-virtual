@@ -3,10 +3,7 @@ package com.huicloud.dockerubuntuvirtual.controllers;
 import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.models.SSHKey;
 import com.huicloud.dockerubuntuvirtual.models.Snapshot;
-import com.huicloud.dockerubuntuvirtual.services.NetworkService;
-import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
-import com.huicloud.dockerubuntuvirtual.services.SnapshotService;
-import com.huicloud.dockerubuntuvirtual.services.UserService;
+import com.huicloud.dockerubuntuvirtual.services.*;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
 import javax.servlet.*;
@@ -30,6 +27,7 @@ public class ImageServlet extends HttpServlet {
                     ServerUtils.foward("/viewAdmin/AdImage.jsp", request, response);
                 }
                 else {
+                    ImageService.findAllByUserId((Integer) session.getAttribute("userId"));
                     ServerUtils.foward("/viewMain/Image.jsp", request, response);
                 }
                 break;
@@ -51,10 +49,10 @@ public class ImageServlet extends HttpServlet {
         switch (url) {
             case "/":
                 String idImage = request.getParameter("IdImage");
-                System.out.println(idImage);
-                System.out.println("Hehe");
-
-                response.sendRedirect(request.getContextPath() + "/Main/Image/LaunchInstanceFromImage");
+                String idAction= request.getParameter("IdAction");
+                if (Integer.parseInt(idAction)==0) {
+                    ImageService.removeImage(Integer.parseInt(idImage));
+                }
                 break;
             case "/LaunchInstanceFromImage":
                 response.sendRedirect(request.getContextPath() + "/Main/Instance");

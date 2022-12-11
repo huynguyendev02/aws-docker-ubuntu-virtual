@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 
                     session.setAttribute("userId" , user.getId());
                     session.setAttribute("username" , user.getUsername());
-
+                    session.setAttribute("type",user.getType());
                     List<Instance> list2 = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                     request.setAttribute("instances", list2);
 

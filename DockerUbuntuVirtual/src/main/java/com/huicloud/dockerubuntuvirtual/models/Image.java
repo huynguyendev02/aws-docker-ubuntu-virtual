@@ -1,5 +1,8 @@
 package com.huicloud.dockerubuntuvirtual.models;
 
+import com.huicloud.dockerubuntuvirtual.services.ImageService;
+import com.huicloud.dockerubuntuvirtual.services.ServerServices;
+
 public class Image {
     int id;
     String nameImage;
@@ -71,5 +74,15 @@ public class Image {
 
     public void setNameImage(String nameImage) {
         this.nameImage = nameImage;
+    }
+
+    public String getIPSever(){
+        return ServerServices.findServerById(this.serverId).ipServer;
+    }
+    public String getOS(){
+        return ImageService.findImageById(this.type).nameImage;
+    }
+    public String getSSHMethod(){
+        return this.sshMethod == 0 ? "Password" : "RSA 4096bits";
     }
 }

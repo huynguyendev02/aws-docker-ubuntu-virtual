@@ -65,32 +65,19 @@ public class SnapshotServlet extends HttpServlet {
         switch (url) {
             case "/":
 //                ID của Snap mới chọn
-                String idSnap = request.getParameter("IdSnapshot");
+                System.out.print(request.getParameter("IdSnapshot"));
+                System.out.print(request.getParameter("idAction"));
 
+                int idSnap = Integer.parseInt(request.getParameter("IdSnapshot"));
+                int idAction = Integer.parseInt(request.getParameter("idAction"));
+                if (idAction==0) {
+                    SnapshotService.removeSnap(idSnap);
+                    response.sendRedirect(request.getContextPath() + "/Main/Snapshot");
 
-                response.sendRedirect(request.getContextPath() + "/Main/Instance");
-                break;
-            case "/LaunchInstanceFromSnapshot":
-
-                String nameIns = request.getParameter("NameInstance");
-                int osId =   Integer.parseInt(request.getParameter("OS")) ;
-                double cpus = Double.parseDouble(request.getParameter("CPUS"));
-                double mem =  Double.parseDouble(request.getParameter("Memory"));
-                String terminateState = request.getParameter("terminate");
-                System.out.print(Integer.parseInt(request.getParameter("SSHKey")));
-                int sshId =Integer.parseInt(request.getParameter("SSHKey")) ;
-//                int netId  =Integer.parseInt(request.getParameter("Network"));
-
-                System.out.println(nameIns);
-                System.out.println(osId);
-                System.out.println(cpus);
-                System.out.println(mem);
-                System.out.println(terminateState);
-                System.out.println(sshId);
-//                System.out.println(netId);
-
-
-                response.sendRedirect(request.getContextPath() + "/Main/Instance");
+                } else {
+                    SnapshotService.restoreSnap(idSnap);
+                    response.sendRedirect(request.getContextPath() + "/Main/Instance");
+                }
                 break;
             default:
                 break;

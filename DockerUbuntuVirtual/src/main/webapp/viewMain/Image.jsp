@@ -43,11 +43,12 @@
 
                     <div style="width: 60%">
                         <div class="dropdown" style="width: 100%" align="right">
-                            <button id="Launch" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Launch Instance</button>
+                            <button id="Launch" onclick="launch()" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Launch Instance</button>
                         </div>
                     </div>
                 </div>
                 <input name="IdImage" id="IdImage" type="text" style="display: none">
+                <input name="idAction" id="idAction" type="text" style="display: none">
                 <div class="card-body">
                     <table style="width: 100%">
                         <tr style="background-color: lightgray" align="center">
@@ -67,7 +68,7 @@
                             <td>OS base</td>
                             <td>SSH method</td>
                             <td>
-                                <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>
+                                <button class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick('1')" type="submit"><b>Delete</b>
                                 </button>
                             </td>
                         </tr>
@@ -94,7 +95,11 @@
 </div>
 <script>
     function deleteClick(id) {
-        document.getElementById("IdSnapshot").value = id;
+        document.getElementById("idAction").value = 0;
+        document.getElementById("IdImage").value = id;
+    }
+    function launch(){
+        document.getElementById("idAction").value = 1;
     }
 
     function choose(n) {

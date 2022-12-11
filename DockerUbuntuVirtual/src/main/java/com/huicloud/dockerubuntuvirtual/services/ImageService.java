@@ -7,6 +7,8 @@ import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
 import com.huicloud.dockerubuntuvirtual.utils.HostSSHUtils;
 import org.sql2o.Connection;
 
+import java.util.List;
+
 public class ImageService {
     public static Image findImageById(int imageId){
         String query = "select * from image where id= :imageId";
@@ -19,13 +21,13 @@ public class ImageService {
         Instance ins = InstanceService.findInsById(idInstance);
         int serverId = NetworkService.findNetworkById(ins.getNetworkId()).getServerId();
         String nameUser = UserService.getUsername(userId);
-        HostSSHUtils.executeCommand("docker commit "+ins.getNameInstance()+" "+userId+"/"+nameImage);
+        HostSSHUtils.executeCommand("docker commit "+ins.getNameInstance()+" "+nameUser+"/"+nameImage);
 
         String query = "insert into image (nameImage, serverId, type, sshMethod) " +
                 "values (:nameImage, :serverId, :type, :sshMethod)";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query)
-                    .addParameter("nameImage",userId+"/"+nameImage)
+                    .addParameter("nameImage",nameUser+"/"+nameImage)
                     .addParameter("serverId",serverId)
                     .addParameter("type", ins.getImageId())
                     .addParameter("sshMethod", ins.getKeyId()==0 ? 0:1)
@@ -44,6 +46,13 @@ public class ImageService {
                     .executeUpdate();
         }
     }
-
+    public static List<Image> findAllByUserId(int userId) {
+        String query1 = "select * from image where userId=:userId";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return con.createQuery(query1)
+                    .addParameter("userId",userId)
+                    .executeAndFetch(Image.class);
+        }
+    }
 
 }

@@ -95,6 +95,8 @@ public class InstanceServlet extends HttpServlet {
                     System.out.println(idInstance);
                     System.out.println(imageName);
 
+                    ImageService.createImage(imageName,idInstance,(Integer) session.getAttribute("userId"));
+
                     response.sendRedirect(request.getContextPath() + "/Main/Image");
                 }
 
