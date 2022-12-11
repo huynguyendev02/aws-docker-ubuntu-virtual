@@ -3,6 +3,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<jsp:useBean id="images" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Image>"/>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,33 +62,20 @@
                             <td>SSH method</td>
                             <td>&emsp;</td>
                         </tr>
-                        <tr  align="center">
-                            <td><input name="chooseInstance" type="radio" onclick="choose('1')" value="Yes"/></td>
-                            <td>1</td>
-                            <td>Name</td>
-                            <td>Server</td>
-                            <td>OS base</td>
-                            <td>SSH method</td>
-                            <td>
-                                <button class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick('1')" type="submit"><b>Delete</b>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <%--                        <c:forEach items="${Snapshots}" var="c">--%>
-                        <%--                            <tr align="center">--%>
-                        <%--                                <td><input name="chooseInstance" type="radio" onclick="choose(${c.id})" value="Yes"/></td>--%>
-                        <%--                                <td>${c.id}</td>--%>
-                        <%--                                <td>${c.nameSnapshot}</td>--%>
-                        <%--                                <td>${c.imageId}</td>--%>
-                        <%--                                <td>Server</td>--%>
-                        <%--                                <td>Hôm nay</td>--%>
-                        <%--                                <td>--%>
-                        <%--                                    <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>--%>
-                        <%--                                    </button>--%>
-                        <%--                                </td>--%>
-                        <%--                            </tr>--%>
-                        <%--                        </c:forEach>--%>
+                        <c:forEach items="${images}" var="c">
+                            <tr  align="center">
+                                <td><input name="chooseInstance" type="radio" onclick="choose('${c.id}')" value="Yes"/></td>
+                                <td>${c.id}</td>
+                                <td>${c.nameImage}</td>
+                                <td>${c.IPSever}</td>
+                                <td>${c.OS}</td>
+                                <td>${c.SSHMethod}</td>
+                                <td>
+                                    <button class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick('${c.id}')" type="submit"><b>Delete</b>
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </table>
                 </div>
             </form>

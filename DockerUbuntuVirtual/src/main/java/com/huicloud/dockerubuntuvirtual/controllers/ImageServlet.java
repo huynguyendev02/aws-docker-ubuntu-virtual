@@ -1,5 +1,6 @@
 package com.huicloud.dockerubuntuvirtual.controllers;
 
+import com.huicloud.dockerubuntuvirtual.models.Image;
 import com.huicloud.dockerubuntuvirtual.models.Network;
 import com.huicloud.dockerubuntuvirtual.models.SSHKey;
 import com.huicloud.dockerubuntuvirtual.models.Snapshot;
@@ -27,7 +28,9 @@ public class ImageServlet extends HttpServlet {
                     ServerUtils.foward("/viewAdmin/AdImage.jsp", request, response);
                 }
                 else {
-                    ImageService.findAllByUserId((Integer) session.getAttribute("userId"));
+
+                    List<Image> imglist =  ImageService.findAllByUserId((Integer) session.getAttribute("userId"));
+                    request.setAttribute("images",imglist);
                     ServerUtils.foward("/viewMain/Image.jsp", request, response);
                 }
                 break;

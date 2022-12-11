@@ -10,6 +10,16 @@ public class Image {
     int type;
     int sshMethod;
 
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    int userId;
+
     public int getSshMethod() {
         return sshMethod;
     }
