@@ -45,20 +45,22 @@
 
         <div class="card-body">
           <table id="tableInfo" style="width: 100%">
-            <tr style="background-color: lightgray" align="left">
+            <tr style="background-color: lightgray" align="center">
               <td>ID User</td>
               <td>Username</td>
               <td>Password</td>
+              <td>Role</td>
               <td>&ensp;</td>
               <td>&ensp;</td>
             </tr>
             <input name="IdUser" id="IdUser" type="text" style="display: none">
             <input name="IdAction" id="IdAction" type="text" style="display: none">
             <c:forEach items="${Users}" var="c">
-              <tr align="left">
+              <tr align="center">
                 <td>${c.id}</td>
                 <td>${c.username}</td>
                 <td>${c.password}</td>
+                <td>${c.type==0 ? "Admin":"Role"}</td>
                 <td><button  class="btn btn-outline-success" style="border-style: none" onclick="editClick('${c.id}')" type="button"><b>Edit</b>
                 </button></td>
                 <td><button  class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick('${c.id}')" type="submit"><b>Delete</b>
@@ -74,7 +76,7 @@
               </div>
               <input name="Username" type="text" class="form-control" placeholder="Username"
                      aria-label="Username"
-                     aria-describedby="addon-wrapping" required>
+                     aria-describedby="addon-wrapping" >
             </div>
             <br>
             <div class="input-group flex-nowrap">
@@ -83,14 +85,13 @@
               </div>
               <input name="Password" type="text" class="form-control" placeholder="Password"
                      aria-label="Password"
-                     aria-describedby="addon-wrapping" required>
+                     aria-describedby="addon-wrapping" >
             </div>
             <br>
             <div align="right">
               <button id="btCreate" type="submit" class="btn btn-success">Create</button>
             </div>
           </div>
-
 
           <div id="tableEditUser" style="display: none">
             <div class="input-group flex-nowrap">
@@ -99,7 +100,7 @@
               </div>
               <input name="NewUsername" type="text" class="form-control" placeholder="New Username"
                      aria-label="NewUsername"
-                     aria-describedby="addon-wrapping" required>
+                     aria-describedby="addon-wrapping" >
             </div>
             <br>
             <div class="input-group flex-nowrap">
@@ -108,9 +109,17 @@
               </div>
               <input name="NewPassword" type="text" class="form-control" placeholder="New Password"
                      aria-label="NewPassword"
-                     aria-describedby="addon-wrapping" required>
+                     aria-describedby="addon-wrapping" >
             </div>
             <br>
+            <div class="input-group flex-nowrap">
+              <div class="input-group-prepend">
+                <span class="input-group-text">New Role</span>
+              </div>
+              <input name="NewRole" type="number" class="form-control" placeholder="New Role"
+                     aria-label="NewRole"
+                     aria-describedby="addon-wrapping" >
+            </div>
             <div align="right">
               <button id="btSave" type="submit" class="btn btn-success">Save</button>
             </div>

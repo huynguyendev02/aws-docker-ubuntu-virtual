@@ -15,7 +15,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Launch an instance</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -80,7 +80,7 @@
                         <div>
                         </div>
                         <div>
-                            <input name="CPUS" type="number" min="0.5" max="3" class="form-control" placeholder="CPUS" aria-label="CPUS"
+                            <input name="CPUS" type="number" min="1" max="3" class="form-control" placeholder="CPUS" aria-label="CPUS"
                                    aria-describedby="basic-addon1" required>
                             <br>
                         </div>
@@ -140,37 +140,29 @@
                             </div>
                         </div>
                     </div>
-
+                    <br>
                     <div>
-                        <input name="Server" id="Server" type="text" style="visibility: hidden">
-                        <h5>Server</h5>
+                        <input name="Network" id="Network" type="text" style="display: none">
+                        <h5>Network</h5>
                     </div>
                     <div style="display: flex">
                         <div class="input-group-append">
-                            <button id="btServer" class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                    data-toggle="dropdown" aria-expanded="false">Choose
-                            </button>
-                            <div class="dropdown-menu">
-                                <c:forEach items="${Servers}" var="c">
-                                    <a name="" class="dropdown-item"
-                                       onclick="Server('${c.id}','${c.ipServer}')">${c.ipServer}</a>
-                                </c:forEach>
-                            </div>
-                        </div>
-
-                        <input name="Network" id="Network" type="text" style="display: none">
-                        <div id="chooseNetwork" class="input-group-append" style="padding-left: 30px; display: none" >
                             <button id="btNetwork" class="btn btn-outline-secondary dropdown-toggle" type="button"
                                     data-toggle="dropdown" aria-expanded="false">Choose Network
                             </button>
                             <div class="dropdown-menu">
-                                <% for (Network n : NetworkService.findAllById((Integer) request.getSession().getAttribute("userId"))) {%>
-                                    <% int temp = request.getAttribute("Server") == null?1:(Integer)request.getAttribute("Server");%>
-                                    <% if (n.getServerId() == temp) %>
-                                        <a  class="dropdown-item"
-                                    onclick="Network('<%=n.getId()%>','<%=n.getNameNetwork()%>')"><%=n.getNameNetwork()%></a>
-                                <% } %>
+                                <c:forEach items="${Networks}" var="c">
+                                    <a name="" class="dropdown-item"
+                                       onclick="Network('${c.id}','${c.serverId}','${c.nameNetwork}','${c.IPServer}')">${c.nameNetwork}</a>
+                                </c:forEach>
                             </div>
+                        </div>
+
+                        <input name="Server" id="Server" type="text" style="display: none">
+                        <div id="chooseServer" class="input-group-append" style="padding-left: 30px; display: none" >
+                            <button id="btServer" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-expanded="false" disabled>Choose Network
+                            </button>
                         </div>
                     </div>
 
@@ -221,15 +213,12 @@
         document.getElementById("ChooseTer").innerText = "Disable";
     }
 
-    function Server(i, name) {
-        document.getElementById("btServer").innerText = name;
-        document.getElementById("Server").value = i;
-        document.getElementById("chooseNetwork").style.display = 'flex'
-    }
-
-    function Network(i, name) {
+    function Network(idNet, idServer, name, ip) {
         document.getElementById("btNetwork").innerText = name;
-        document.getElementById("Network").value = i;
+        document.getElementById("btServer").innerText = ip;
+        document.getElementById("Network").value = idNet;
+        document.getElementById("Server").value = idServer;
+        document.getElementById("chooseServer").style.display = 'flex'
     }
 
     function SSKeyList() {

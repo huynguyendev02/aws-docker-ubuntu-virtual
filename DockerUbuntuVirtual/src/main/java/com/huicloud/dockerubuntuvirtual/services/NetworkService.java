@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NetworkService {
     public static void addNetwork(int userId, String nameNetwork, int serverId){
-        HostSSHUtils.executeCommand("docker network create "+UserService.getUsername(userId)+":"+nameNetwork);
+        HostSSHUtils.executeCommand("docker network create "+UserService.getUsername(userId)+":"+nameNetwork,serverId);
         String query = "insert into network ( nameNetwork, userId, serverId ) values ( :nameNetwork, :userId, :serverId )";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query,true)
@@ -30,12 +30,22 @@ public class NetworkService {
             return network;
         }
     }
-//    public static List<Network> findAll() {
-//        String query = "select * from network";
-//        try (Connection con = ConnectionUtils.openConnection()) {
-//            return con.createQuery(query).executeAndFetch(Network.class);
-//        }
-//    }
+    public static List<Network> findNetworkByServerId(int serverId, int userId) {
+        String query = "select * from network where serverId= :serverId and userId= :userId";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return  con.createQuery(query)
+                    .addParameter("serverId",serverId)
+                    .addParameter("userId",userId)
+                    .executeAndFetch(Network.class);
+            }
+        }
+
+    public static List<Network> findAll() {
+        String query = "select * from network";
+        try (Connection con = ConnectionUtils.openConnection()) {
+            return con.createQuery(query).executeAndFetch(Network.class);
+        }
+    }
     public static List<Network> findAllById(int userId) {
         String query = "select * from network where userId= :userId";
         try (Connection con = ConnectionUtils.openConnection()){

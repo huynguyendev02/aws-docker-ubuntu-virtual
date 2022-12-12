@@ -20,7 +20,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Launch Instance from Image</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -169,12 +169,11 @@
                                     data-toggle="dropdown" aria-expanded="false">Choose Network
                             </button>
                             <div class="dropdown-menu">
-                                <% for (Network n : NetworkService.findAllById((Integer) request.getSession().getAttribute("userId"))) {%>
-                                <% int tempp = request.getAttribute("Server") == null?1:(Integer)request.getAttribute("Server");%>
-                                <% if (n.getServerId() == tempp) %>
-                                <a  class="dropdown-item"
-                                    onclick="Network('<%=n.getId()%>','<%=n.getNameNetwork()%>')"><%=n.getNameNetwork()%></a>
-                                <% } %>
+                                <c:forEach items="${Networks}" var="c">
+                                    <a name="" class="dropdown-item"
+                                       onclick="Network('${c.id}','${c.nameNetwork}')">${c.nameNetwork}</a>
+                                </c:forEach>
+
                             </div>
                         </div>
                         </div>

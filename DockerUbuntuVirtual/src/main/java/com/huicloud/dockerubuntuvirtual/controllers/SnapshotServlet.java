@@ -26,13 +26,16 @@ public class SnapshotServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-                List<Snapshot> listSnaps = SnapshotService.findAll();
-                request.setAttribute("Snapshots", listSnaps);
 
-                if (UserService.check() == 0){
+
+                if (UserService.check(session) == 0){
+                    List<Snapshot> listSnaps = SnapshotService.findAll();
+                    request.setAttribute("Snapshots", listSnaps);
                     ServerUtils.foward("/viewAdmin/AdSnap.jsp", request, response);
                 }
                 else {
+                    List<Snapshot> listSnaps = SnapshotService.findAllByUserId((Integer) session.getAttribute("userId"));
+                    request.setAttribute("Snapshots", listSnaps);
                     ServerUtils.foward("/viewMain/Snap.jsp", request, response);
                 }
                 break;

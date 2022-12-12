@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Admin Snapshots</title>
   <style>
     a.disabled {
       pointer-events: none;
@@ -58,7 +58,7 @@
               <td>&emsp;</td>
               <td>ID</td>
               <td>Name</td>
-              <td>Image</td>
+              <td>Base Instance</td>
               <td>Server</td>
               <td>Created at</td>
               <td>&emsp;</td>
@@ -70,7 +70,7 @@
                 <td><input name="chooseInstance" type="radio" onclick="choose(${c.id})" value="Yes"/></td>
                 <td>${c.id}</td>
                 <td>${c.nameSnapshot}</td>
-                <td>Image</td>
+                <td>${c.nameInstance.split("0")[1]}</td>
                 <td>${c.IPServer}</td>
                 <td>${c.createdAt}</td>
                 <td>

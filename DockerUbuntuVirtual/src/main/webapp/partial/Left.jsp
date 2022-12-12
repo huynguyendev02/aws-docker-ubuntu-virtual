@@ -2,7 +2,7 @@
 <div class="col-sm-2 m-0 p-0" >
     <div class="card" style="width: 100%">
         <div class="card-header" style="background-color: white">
-            <h4><i class="fa fa-google" aria-hidden="true">&ensp;<span id="title"> <%=UserService.check()%> </span> </i></h4>
+            <h4><i class="fa fa-google" aria-hidden="true">&ensp;<span id="title"> <%=UserService.check(request.getSession())%> </span> </i></h4>
 
         </div>
         <div class="">

@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Instances</title>
     <style>
         a.disabled {
             pointer-events: none;
@@ -90,7 +90,7 @@
                                 <td><input name="hehe" type="radio"
                                            onclick="choose(${c.id},'${c.nameInstance}','${c.serverIp()}')" value="Yes"/></td>
                                 <td>${c.id}</td>
-                                <td>${c.nameInstance}</td>
+                                <td>${c.nameInstance.split("0")[1]}</td>
                                 <td id="state">${c.state}</td>
                                 <td>${c.networkId}</td>
                                 <td>${c.serverIp()}</td>

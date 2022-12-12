@@ -20,18 +20,18 @@ import java.util.Base64;
 import java.util.List;
 
 public class SSHKeyService {
-    public static String addKey(int userId, String keyName, String pathKey) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
+    public static String addKey(int userId, String keyName, String pathKey, int serverId) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException {
         //generate RSA Key
-        HostSSHUtils.executeCommand("mkdir /home/ubuntu/KEYSSH/" + UserService.getUsername(userId));
-        HostSSHUtils.executeCommand("sudo openssl genrsa -out /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+".pem 4096");
-        System.out.println(HostSSHUtils.executeCommand("sudo openssl rsa -pubout -in /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+".pem -out /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+"pub.pem"));
-        System.out.println(HostSSHUtils.executeCommand("sudo openssl pkcs8 -topk8 -in /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+".pem -inform pem -out /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+keyName+"java.pem -outform pem -nocrypt"));
+        HostSSHUtils.executeCommand("mkdir /home/ubuntu/KEYSSH/" + UserService.getUsername(userId),serverId);
+        HostSSHUtils.executeCommand("sudo openssl genrsa -out /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+".pem 4096", serverId);
+        System.out.println(HostSSHUtils.executeCommand("sudo openssl rsa -pubout -in /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+".pem -out /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+"pub.pem",serverId));
+        System.out.println(HostSSHUtils.executeCommand("sudo openssl pkcs8 -topk8 -in /home/ubuntu/KEYSSH/"+ UserService.getUsername(userId)+"/"+keyName+".pem -inform pem -out /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+keyName+"java.pem -outform pem -nocrypt",serverId));
 
 
 
         //give PrivateKey to User
 
-        String privateKeyContent = HostSSHUtils.executeCommand("sudo cat /home/ubuntu/KEYSSH/" +UserService.getUsername(userId) +"/"+keyName+"java.pem");
+        String privateKeyContent = HostSSHUtils.executeCommand("sudo cat /home/ubuntu/KEYSSH/" +UserService.getUsername(userId) +"/"+keyName+"java.pem",serverId);
 
         privateKeyContent = privateKeyContent.replaceAll("\\n", "").replace("-----BEGIN PRIVATE KEY-----", "").replace("-----END PRIVATE KEY-----", "");
         KeyFactory kf = KeyFactory.getInstance("RSA");

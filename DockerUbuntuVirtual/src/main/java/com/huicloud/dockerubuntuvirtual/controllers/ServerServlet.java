@@ -26,7 +26,7 @@ public class ServerServlet extends HttpServlet {
             case "/":
                 List<Server> listServer = ServerServices.findAll();
                 request.setAttribute("Servers", listServer);
-                if (UserService.check()==0){
+                if (UserService.check(session)==0){
                     ServerUtils.foward("/viewAdmin/AdServer.jsp", request, response);
                 }
                 else {
@@ -60,6 +60,7 @@ public class ServerServlet extends HttpServlet {
                 else{
 //                    tên server mới tạo
                     String serverName = request.getParameter("ServerName");
+                    ServerServices.addServer(serverName);
                     System.out.println(serverName);
                 }
                 response.sendRedirect(request.getContextPath() + "/Main/Server");

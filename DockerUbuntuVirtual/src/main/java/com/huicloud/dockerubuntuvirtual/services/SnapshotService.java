@@ -17,12 +17,18 @@ public class SnapshotService {
             return con.createQuery(query).executeAndFetch(Snapshot.class);
         }
     }
+    public static List<Snapshot> findAllByUserId(int userId){
+        String query = "select * from snapshot where userId= :userId";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return con.createQuery(query).addParameter("userId",userId).executeAndFetch(Snapshot.class);
+        }
+    }
     public static void createSnap(String nameSnap, int idInstance){
 
         Instance ins = InstanceService.findInsById(idInstance);
         int serverId = NetworkService.findNetworkById(ins.getNetworkId()).getServerId();
 
-        HostSSHUtils.executeCommand("docker checkpoint create "+ins.getNameInstance()+" "+nameSnap);
+        HostSSHUtils.executeCommand("docker checkpoint create "+ins.getNameInstance()+" "+nameSnap,serverId);
         InstanceService.startIns(idInstance);
 
         String query = "insert into snapshot ( nameSnapshot, userId, instanceId, serverId, createdAt) " +
@@ -49,7 +55,7 @@ public class SnapshotService {
         Snapshot snap = SnapshotService.findSnapById(snapId);
         Instance ins = InstanceService.findInsById(snap.getinstanceId());
 
-        HostSSHUtils.executeCommand("docker checkpoint rm "+ins.getNameInstance()+" "+snap.getNameSnapshot());
+        HostSSHUtils.executeCommand("docker checkpoint rm "+ins.getNameInstance()+" "+snap.getNameSnapshot(), snap.getServerId());
 
         String query1 = "delete from snapshot where id= :snapId";
         try (Connection con = ConnectionUtils.openConnection()){
@@ -62,6 +68,6 @@ public class SnapshotService {
         Snapshot snap = SnapshotService.findSnapById(snapId);
         Instance ins = InstanceService.findInsById(snap.getinstanceId());
 
-        HostSSHUtils.executeCommand("docker start --checkpoint "+snap.getNameSnapshot()+" "+ins.getNameInstance());
+        HostSSHUtils.executeCommand("docker start --checkpoint "+snap.getNameSnapshot()+" "+ins.getNameInstance(),snap.getServerId());
     }
 }

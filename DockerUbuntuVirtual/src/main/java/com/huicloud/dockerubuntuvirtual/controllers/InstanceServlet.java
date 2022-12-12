@@ -23,12 +23,15 @@ public class InstanceServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-                List<Instance> listInstances = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
-                request.setAttribute("instances", listInstances);
-                if (UserService.check()==0){
+
+                if (UserService.check(session)==0){
+                    List<Instance> listInstances = InstanceService.findAll();
+                    request.setAttribute("instances", listInstances);
                     ServerUtils.foward("/viewAdmin/AdInstance.jsp", request, response);
                 }
                 else {
+                    List<Instance> listInstances = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
+                    request.setAttribute("instances", listInstances);
                     ServerUtils.foward("/viewMain/Instance.jsp", request, response);
                 }
                 break;
@@ -112,7 +115,7 @@ public class InstanceServlet extends HttpServlet {
                 int netId  =Integer.parseInt(request.getParameter("Network"));
 
 //                ID server mới lấy
-                int serverId =Integer.parseInt(request.getParameter("Server")) ;
+//                int serverId =Integer.parseInt(request.getParameter("Server")) ;
 
                 InstanceService.createInstance(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
                 response.sendRedirect(request.getContextPath() + "/Main/Instance");

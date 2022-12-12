@@ -8,7 +8,7 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent" style="display: flex; justify-content: space-between">
     <h5 style="color: white">
-      Hui & Hiu Cloud
+      Hui Environment
     </h5>
     <h5 class="col-lg-2">
       <div class="input-group-append" style="padding-top: 10px">

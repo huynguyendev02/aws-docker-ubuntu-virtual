@@ -1,6 +1,7 @@
 package com.huicloud.dockerubuntuvirtual.models;
 
 
+import com.huicloud.dockerubuntuvirtual.services.InstanceService;
 import com.huicloud.dockerubuntuvirtual.services.ServerServices;
 
 public class Snapshot {
@@ -76,5 +77,8 @@ public class Snapshot {
     }
     public String getIPServer(){
         return ServerServices.findServerById(this.serverId).ipServer;
+    }
+    public String getNameInstance() {
+        return InstanceService.findInsById(this.instanceId).nameInstance;
     }
 }

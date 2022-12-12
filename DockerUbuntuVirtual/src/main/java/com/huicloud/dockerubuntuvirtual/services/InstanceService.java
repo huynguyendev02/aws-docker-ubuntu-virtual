@@ -22,7 +22,7 @@ public class InstanceService {
            instances = con.createQuery(query1)
                    .executeAndFetch(Instance.class);
        }
-       int port =0;
+       int port =20000;
        if (instances.size()==0) {
            port = 20000;
        } else {
@@ -44,6 +44,7 @@ public class InstanceService {
            if (image.getType()==1) {
                commandUbuntuKey = "docker run -d -p "+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" "+image.getNameImage();
                commandUbuntuPass = commandUbuntuKey;
+               System.out.print(commandUbuntuKey);
            } else {
                commandCentosKey = "docker run -dit -d -p"+port+":22 --cpus " + cpus +" --memory "+ memory +"G --net " + net.getNameNetwork() +" --name "+UserService.getUsername(userId)+ "0"+ nameInstance +" --privileged "+image.getNameImage()+" /usr/sbin/init \"systemctl start sshd; /usr/sbin/sshd -D\"";
                commandCentosPass =commandCentosKey;
@@ -51,16 +52,16 @@ public class InstanceService {
        }
 
        if (keyId==0) {
-           if (imageId ==1)
-               HostSSHUtils.executeCommand(commandUbuntuPass);
+           if (image.getType()==1)
+               HostSSHUtils.executeCommand(commandUbuntuPass, ser.getId());
            else
-               HostSSHUtils.executeCommand(commandCentosPass);
+               HostSSHUtils.executeCommand(commandCentosPass,ser.getId());
        } else {
-           if (imageId ==1)
-               HostSSHUtils.executeCommand(commandUbuntuKey);
+           if (image.getType()==1)
+               HostSSHUtils.executeCommand(commandUbuntuKey,ser.getId());
            else
-               HostSSHUtils.executeCommand(commandCentosKey);
-           HostSSHUtils.executeCommand("sudo docker cp /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+SSHKeyService.getNameById(keyId)+"pub.pem "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys");
+               HostSSHUtils.executeCommand(commandCentosKey, ser.getId());
+           HostSSHUtils.executeCommand("sudo docker cp /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+SSHKeyService.getNameById(keyId)+"pub.pem "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys",ser.getId());
        }
 
         String query2 = "insert into instance ( nameInstance, cpus, memory, port, networkId, userId, imageId, state, keyId  ) " +
@@ -91,7 +92,9 @@ public class InstanceService {
 
     public static void startIns(int idInstance) {
         Instance ins = InstanceService.findInsById(idInstance);
-        HostSSHUtils.executeCommand("docker start "+ins.getNameInstance());
+        int serverId = NetworkService.findNetworkById(ins.getNetworkId()).getServerId();
+
+        HostSSHUtils.executeCommand("docker start "+ins.getNameInstance(),serverId);
 
         String query1 = "update instance set state= :state where id= :id";
         try (Connection con = ConnectionUtils.openConnection()){
@@ -103,7 +106,9 @@ public class InstanceService {
     }
     public static void stopIns(int idInstance) {
         Instance ins = InstanceService.findInsById(idInstance);
-        HostSSHUtils.executeCommand("docker stop "+ins.getNameInstance());
+        int serverId = NetworkService.findNetworkById(ins.getNetworkId()).getServerId();
+
+        HostSSHUtils.executeCommand("docker stop "+ins.getNameInstance(),serverId);
         String query1 = "update instance set state= :state where id= :id";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query1)
@@ -114,8 +119,10 @@ public class InstanceService {
     }
     public static void terminateIns(int idInstance) {
         Instance ins = InstanceService.findInsById(idInstance);
-        HostSSHUtils.executeCommand("docker stop "+ins.getNameInstance());
-        HostSSHUtils.executeCommand("docker rm "+ ins.getNameInstance());
+        int serverId = NetworkService.findNetworkById(ins.getNetworkId()).getServerId();
+
+        HostSSHUtils.executeCommand("docker stop "+ins.getNameInstance(),serverId);
+        HostSSHUtils.executeCommand("docker rm "+ ins.getNameInstance(),serverId);
         String query1 = "delete from instance where id= :id";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query1)
@@ -129,6 +136,13 @@ public class InstanceService {
         try (Connection con = ConnectionUtils.openConnection()){
             return con.createQuery(query1)
                     .addParameter("userId",userId)
+                    .executeAndFetch(Instance.class);
+        }
+    }
+    public static List<Instance> findAll() {
+        String query1 = "select * from instance";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return con.createQuery(query1)
                     .executeAndFetch(Instance.class);
         }
     }

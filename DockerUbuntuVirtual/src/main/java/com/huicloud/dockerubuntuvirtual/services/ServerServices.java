@@ -5,6 +5,7 @@ import com.huicloud.dockerubuntuvirtual.utils.ConnectionUtils;
 import com.huicloud.dockerubuntuvirtual.utils.HostSSHUtils;
 import org.sql2o.Connection;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,15 +24,19 @@ public class ServerServices {
         }
     }
     public static void addServer(String ipAddress) {
-        String token = HostSSHUtils.executeCommand("docker swarm join-token worker");
-
         String query = "insert into server ( ipServer, state) " +
                 "values ( :ipServer, :state)";
-        try (Connection con = ConnectionUtils.openConnection()){
-            con.createQuery(query)
-                    .addParameter("ipServer",ipAddress)
-                    .addParameter("state","Running")
-                    .executeUpdate();
+        BigInteger newServerId;
+        try (Connection con = ConnectionUtils.openConnection()) {
+            newServerId = (BigInteger) con.createQuery(query, true)
+                    .addParameter("ipServer", ipAddress)
+                    .addParameter("state", "Running")
+                    .executeUpdate()
+                    .getKey();
         }
+        String token = HostSSHUtils.executeCommand("docker swarm join-token worker",1).split("\n")[2].trim();
+        System.out.print( newServerId.intValue());
+        HostSSHUtils.executeCommand(token, newServerId.intValue());
+
     }
 }

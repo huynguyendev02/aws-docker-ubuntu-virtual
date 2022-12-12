@@ -23,16 +23,23 @@ public class ImageServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-                List<Image> imageList =  ImageService.findAllByUserId((Integer) session.getAttribute("userId"));
-                request.setAttribute("images",imageList);
-                if (UserService.check() == 0){
+                if (UserService.check(session) == 0){
+                    List<Image> imageList =  ImageService.findAll();
+                    for (Image img:
+                         imageList) {
+                        System.out.print(img.getIPSever());
+                    }
+                    request.setAttribute("images",imageList);
                     ServerUtils.foward("/viewAdmin/AdImage.jsp", request, response);
                 }
                 else {
+                    List<Image> imageList =  ImageService.findAllByUserId((Integer) session.getAttribute("userId"));
+                    request.setAttribute("images",imageList);
                     ServerUtils.foward("/viewMain/Image.jsp", request, response);
                 }
                 break;
             case "/LaunchInstanceFromImage":
+
                 ServerUtils.foward("/viewMain/viewImage/LaunchInstanceFromImage.jsp", request, response);
                 break;
             default:
@@ -55,6 +62,7 @@ public class ImageServlet extends HttpServlet {
 //                System.out.println("ID Action: " + idAction);
                 if (Integer.parseInt(idAction)==0) {
                     ImageService.removeImage(Integer.parseInt(idImage));
+                    response.sendRedirect(request.getContextPath()+"/Main/Image");
                 }
                 else {
                     String idServer = request.getParameter("IdServer");
@@ -63,11 +71,19 @@ public class ImageServlet extends HttpServlet {
 
                     Server server = ServerServices.findServerById(Integer.valueOf(idServer));
                     Image os = ImageService.findImageById(Integer.valueOf(idImage));
-                    List<Network> NetworkList = NetworkService.findAllById((Integer) session.getAttribute("userId"));
 
+                    System.out.print(idServer);
+                    System.out.print(idServer);
+
+
+                    List<Network> NetworkListByServer = NetworkService.findNetworkByServerId(Integer.parseInt(idServer),(Integer) session.getAttribute("userId"));
+                    for (Network net:NetworkListByServer
+                         ) {
+                        System.out.print(net.getNameNetwork());
+                    }
                     request.setAttribute("server", server);
                     request.setAttribute("os", os);
-                    request.setAttribute("Networks", NetworkList);
+                    request.setAttribute("Networks", NetworkListByServer);
 
 //                    checkSSH = 0: tức là dùng pass
 //                    checkSSH = 1: tức là dùng key
@@ -107,6 +123,9 @@ public class ImageServlet extends HttpServlet {
                 String userData  =request.getParameter("UserData");
 //                ID server mới lấy
                 int serverId =Integer.parseInt(request.getParameter("Server")) ;
+
+                InstanceService.createInstance(nameIns, cpus, mem,netId,(Integer) session.getAttribute("userId"),osId,sshId == -1 ? 0:sshId);
+
 
                 System.out.println("Name: " + nameIns);
                 System.out.println("OS id: " + osId);

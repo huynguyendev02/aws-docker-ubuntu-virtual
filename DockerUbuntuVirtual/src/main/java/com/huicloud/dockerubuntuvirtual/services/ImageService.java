@@ -17,31 +17,41 @@ public class ImageService {
             return image;
         }
     }
+
     public static void createImage(String nameImage, int idInstance, int userId) {
         Instance ins = InstanceService.findInsById(idInstance);
         int serverId = NetworkService.findNetworkById(ins.getNetworkId()).getServerId();
         String nameUser = UserService.getUsername(userId);
-        HostSSHUtils.executeCommand("docker commit "+ins.getNameInstance()+" "+nameUser+"/"+nameImage);
+        HostSSHUtils.executeCommand("docker commit "+ins.getNameInstance()+" "+nameUser+"/"+nameImage, serverId);
 
-        String query = "insert into image (nameImage, serverId, type, sshMethod) " +
-                "values (:nameImage, :serverId, :type, :sshMethod)";
+        String query = "insert into image (nameImage, serverId, type, sshMethod, userId) " +
+                "values (:nameImage, :serverId, :type, :sshMethod, :userId)";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query)
                     .addParameter("nameImage",nameUser+"/"+nameImage)
                     .addParameter("serverId",serverId)
                     .addParameter("type", ins.getImageId())
                     .addParameter("sshMethod", ins.getKeyId()==0 ? 0:1)
+                    .addParameter("userId",userId)
                     .executeUpdate();
         }
     }
 
     public static void removeImage(int imageId){
-        Image image = ImageService.findImageById(imageId);
-        HostSSHUtils.executeCommand("docker image rm "+image.getNameImage());
-
-        String query1 = "delete from image where id= :imageId";
+        String query1 = "select * from instance where imageId=:imageId";
         try (Connection con = ConnectionUtils.openConnection()){
-            con.createQuery(query1)
+            Instance check=  con.createQuery(query1)
+                    .addParameter("imageId",imageId)
+                    .executeAndFetchFirst(Instance.class);
+            if (check != null) return;
+
+        }
+        Image image = ImageService.findImageById(imageId);
+        HostSSHUtils.executeCommand("docker image rm "+image.getNameImage(), image.getServerId());
+
+        String query2 = "delete from image where id= :imageId";
+        try (Connection con = ConnectionUtils.openConnection()){
+            con.createQuery(query2)
                     .addParameter("imageId",imageId)
                     .executeUpdate();
         }
@@ -54,5 +64,11 @@ public class ImageService {
                     .executeAndFetch(Image.class);
         }
     }
+    public static List<Image> findAll(){
+        String query = "select * from image";
+        try (Connection con = ConnectionUtils.openConnection()){
+            return   con.createQuery(query).executeAndFetch(Image.class);
 
+        }
+    }
 }

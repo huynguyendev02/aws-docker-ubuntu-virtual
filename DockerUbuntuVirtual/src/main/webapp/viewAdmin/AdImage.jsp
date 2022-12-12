@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Admin Images</title>
     <style>
         a.disabled {
             pointer-events: none;

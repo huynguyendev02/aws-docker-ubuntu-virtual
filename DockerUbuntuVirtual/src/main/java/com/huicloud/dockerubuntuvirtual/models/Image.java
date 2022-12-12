@@ -87,6 +87,8 @@ public class Image {
     }
 
     public String getIPSever(){
+        if (ServerServices.findServerById(this.serverId) == null)
+            return "";
         return ServerServices.findServerById(this.serverId).ipServer;
     }
     public String getOS(){

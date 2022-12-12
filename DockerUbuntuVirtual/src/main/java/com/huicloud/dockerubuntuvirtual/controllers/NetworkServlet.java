@@ -27,12 +27,15 @@ public class NetworkServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
-                List<Network> listNetwork = NetworkService.findAllById((Integer) session.getAttribute("userId"));
-                request.setAttribute("Networks", listNetwork);
-                if (UserService.check() == 0){
+
+                if (UserService.check(session) == 0){
+                    List<Network> listNetwork = NetworkService.findAll();
+                    request.setAttribute("Networks", listNetwork);
                     ServerUtils.foward("/viewAdmin/AdNetwork.jsp", request, response);
                 }
                 else {
+                    List<Network> listNetwork = NetworkService.findAllById((Integer) session.getAttribute("userId"));
+                    request.setAttribute("Networks", listNetwork);
                     ServerUtils.foward("/viewMain/Network.jsp", request, response);
                 }
                 break;

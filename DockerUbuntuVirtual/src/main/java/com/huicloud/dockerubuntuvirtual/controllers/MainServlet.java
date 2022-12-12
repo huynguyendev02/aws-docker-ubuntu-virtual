@@ -24,7 +24,8 @@ public class MainServlet extends HttpServlet {
             case "/Instance":
                 List<Instance> listInstances = InstanceService.findAllByUserId((Integer) session.getAttribute("userId"));
                 request.setAttribute("instances", listInstances);
-                if (UserService.check()==0){
+                System.out.print(UserService.check(session));
+                if (UserService.check(session)==0){
                     ServerUtils.foward("/viewAdmin/AdInstance.jsp", request, response);
                 }
                 else {
@@ -45,7 +46,7 @@ public class MainServlet extends HttpServlet {
             case "/Network":
                 List<Network> listNetwork = NetworkService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("Networks", listNetwork);
-                if (UserService.check()==0){
+                if (UserService.check(session)==0){
                     ServerUtils.foward("/viewAdmin/AdNetwork.jsp", request, response);
                 }
                 else {
@@ -55,7 +56,7 @@ public class MainServlet extends HttpServlet {
             case "/Server":
                 List<Server> listServer = ServerServices.findAll();
                 request.setAttribute("Servers", listServer);
-                if (UserService.check()==0){
+                if (UserService.check(session)==0){
                     ServerUtils.foward("/viewAdmin/AdServer.jsp", request, response);
                 }
                 else {

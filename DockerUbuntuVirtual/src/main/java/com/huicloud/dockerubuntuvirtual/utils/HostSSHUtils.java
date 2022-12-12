@@ -1,6 +1,8 @@
 package com.huicloud.dockerubuntuvirtual.utils;
 
 import com.huicloud.dockerubuntuvirtual.config.Config;
+import com.huicloud.dockerubuntuvirtual.models.Server;
+import com.huicloud.dockerubuntuvirtual.services.ServerServices;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
@@ -16,12 +18,15 @@ public class HostSSHUtils {
 
     static Session session;
 
-    public static String executeCommand(String command){
+    public static String executeCommand(String command, int serverId){
+
+        Server server =  ServerServices.findServerById(serverId);
+
         String outputConsole="";
         try{
             config.put("StrictHostKeyChecking", "no");
             jsch.addIdentity(Config.privatekeyPath);
-            session = jsch.getSession("ubuntu", Config.server, 22);
+            session = jsch.getSession("ubuntu", server.getIpServer(), 22);
             session.setConfig(config);
             session.connect();
             System.out.println("Connected");

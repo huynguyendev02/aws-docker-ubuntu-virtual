@@ -34,7 +34,7 @@ public class SSHServlet extends HttpServlet {
         }
         switch (url){
             case "/":
-                if (UserService.check() == 0){
+                if (UserService.check(session) == 0){
                     ServerUtils.foward("/viewAdmin/AdSsh.jsp", request, response);
                 }
                 else {
@@ -91,7 +91,7 @@ public class SSHServlet extends HttpServlet {
         }
         switch (url){
             case "/":
-                if (UserService.check() == 0){
+                if (UserService.check(session) == 0){
                     ServerUtils.foward("/viewAdmin/AdSsh.jsp", request, response);
                 }
                 else {
@@ -106,7 +106,7 @@ public class SSHServlet extends HttpServlet {
                 String path = context.getRealPath("/");
                 System.out.print(path);
                 try {
-                    String key = SSHKeyService.addKey((Integer) session.getAttribute("userId"),request.getParameter("nameKey"), path);
+                    String key = SSHKeyService.addKey((Integer) session.getAttribute("userId"),request.getParameter("nameKey"), path, serverId);
                     session.setAttribute("SSHKey",key);
 
                 } catch (NoSuchAlgorithmException e) {
