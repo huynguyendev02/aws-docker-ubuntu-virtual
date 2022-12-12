@@ -40,16 +40,18 @@
         <div class="card-header"
              style=" display: flex; justify-content: space-between; border-style: none">
           <div style="display: flex; justify-content: space-between">
-            <h4>Snapshot</h4>
+            <h4>Manager Snapshot</h4>
           </div>
 
           <div style="width: 60%">
             <div class="dropdown" style="width: 100%" align="right">
-              <button id="Launch" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Restore</button>
+              <button id="Launch" onclick="launch()" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Restore</button>
             </div>
           </div>
         </div>
         <input name="IdSnapshot" id="IdSnapshot" type="text" style="display: none">
+        <input name="idAction" id="idAction" type="text" style="display: none">
+
         <div class="card-body">
           <table style="width: 100%">
             <tr style="background-color: lightgray" align="center">
@@ -58,7 +60,7 @@
               <td>Name</td>
               <td>Image</td>
               <td>Server</td>
-              <td>Create at</td>
+              <td>Created at</td>
               <td>&emsp;</td>
 
             </tr>
@@ -86,8 +88,12 @@
 <script>
   function deleteClick(id) {
     document.getElementById("IdSnapshot").value = id;
+    document.getElementById("idAction").value = 0;
   }
 
+  function launch(){
+    document.getElementById("idAction").value = 1;
+  }
   function choose(n) {
     document.getElementById("IdSnapshot").value = n
     document.getElementById("Launch").style.visibility = 'visible'

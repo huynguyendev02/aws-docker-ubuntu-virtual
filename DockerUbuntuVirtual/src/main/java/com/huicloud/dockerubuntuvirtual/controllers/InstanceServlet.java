@@ -1,9 +1,6 @@
 package com.huicloud.dockerubuntuvirtual.controllers;
 
-import com.huicloud.dockerubuntuvirtual.models.Instance;
-import com.huicloud.dockerubuntuvirtual.models.Network;
-import com.huicloud.dockerubuntuvirtual.models.SSHKey;
-import com.huicloud.dockerubuntuvirtual.models.Snapshot;
+import com.huicloud.dockerubuntuvirtual.models.*;
 import com.huicloud.dockerubuntuvirtual.services.*;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
@@ -39,8 +36,11 @@ public class InstanceServlet extends HttpServlet {
                 List<SSHKey> list3 = SSHKeyService.findAllById((Integer) session.getAttribute("userId"));
                 request.setAttribute("SSHKeys", list3);
 
-                List<Network> list4 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
-                request.setAttribute("Networks", list4);
+                List<Server> list4 = ServerServices.findAll();
+                request.setAttribute("Servers", list4);
+
+                List<Network> list5 = NetworkService.findAllById((Integer) session.getAttribute("userId"));
+                request.setAttribute("Networks", list5);
 
                 ServerUtils.foward("/viewMain/viewInstance/Launch.jsp", request, response);
                 break;
@@ -110,6 +110,9 @@ public class InstanceServlet extends HttpServlet {
                 System.out.print(Integer.parseInt(request.getParameter("SSHKey")));
                 int sshId =Integer.parseInt(request.getParameter("SSHKey")) ;
                 int netId  =Integer.parseInt(request.getParameter("Network"));
+
+//                ID server mới lấy
+                int serverId =Integer.parseInt(request.getParameter("Server")) ;
 
                 InstanceService.createInstance(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
                 response.sendRedirect(request.getContextPath() + "/Main/Instance");

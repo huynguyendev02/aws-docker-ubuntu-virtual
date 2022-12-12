@@ -3,6 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<jsp:useBean id="Servers" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Server>"/>
 
 
 <!DOCTYPE html>
@@ -37,12 +38,14 @@
             </div>
             <div class="card-body ">
                 <form action="" method="post">
+
+
                     <div class="input-group flex-nowrap">
                         <div class="input-group-prepend">
                             <span class="input-group-text" >Name key</span>
                         </div>
                         <input name="nameKey" type="text" class="form-control" placeholder="Name key" aria-label="Username"
-                               aria-describedby="addon-wrapping">
+                               aria-describedby="addon-wrapping" required>
                     </div>
                     <div><br></div>
                     <div class="input-group flex-nowrap">
@@ -52,6 +55,20 @@
                         <input type="text" class="form-control" placeholder="RSA-4096 bits (sha256withrsa)" aria-label="Username"
                                aria-describedby="addon-wrapping" readonly="True">
                     </div>
+                    <br>
+                    <div>
+                        <input name="Server" id="Server" type="text" style="display: none">
+                        <div class="input-group-append">
+                            <button id="btServer" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-expanded="false">Choose ServerIP
+                            </button>
+                            <div class="dropdown-menu">
+                                <c:forEach items="${Servers}" var="c">
+                                    <a name="" class="dropdown-item" onclick="Server('${c.id}','${c.ipServer}')">${c.ipServer}</a>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <br>
 
@@ -60,7 +77,7 @@
 
 
                             <a class="btn btn-outline-danger" href="${pageContext.request.contextPath}/Main/SSH" role="button">Cancel</a>
-                            <button type="submit" class="btn btn-primary" style="width: 150px;">
+                            <button id="Create" type="submit" class="btn btn-primary" style="width: 150px;">
                                 Create
                             </button>
                         </div>
@@ -73,6 +90,16 @@
 </div>
 </body>
 <script>
-
+    function Server(i, name) {
+        document.getElementById("btServer").innerText = name;
+        document.getElementById("Server").value = i;
+    }
+    document.getElementById("Create").addEventListener("click", function(event) {
+        if (document.getElementById("Server").value == "") {
+            alert("Please choose Server!")
+            event.preventDefault()
+            return;
+        }
+    })
 </script>
 </html>

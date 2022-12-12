@@ -36,7 +36,7 @@
                 </a>
             </div>
             <div id="user">
-                <a href="${pageContext.request.contextPath}/Main/Server" class="btn btn-outline-dark btn-lg"
+                <a href="${pageContext.request.contextPath}/Main/User" class="btn btn-outline-dark btn-lg"
                    role="button" style=" width: 100%; text-align: left; border-style: none; border-left-style: solid; border-left-width: 5px"> &ensp;<i class="fa fa-user" aria-hidden="true"></i> &ensp; User
                 </a>
             </div>

@@ -3,6 +3,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<jsp:useBean id="images" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Image>"/>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -38,16 +40,21 @@
                 <div class="card-header"
                      style=" display: flex; justify-content: space-between; border-style: none">
                     <div style="display: flex; justify-content: space-between">
-                        <h4>Image</h4>
+                        <h4>Manager Image</h4>
                     </div>
 
                     <div style="width: 60%">
                         <div class="dropdown" style="width: 100%" align="right">
-                            <button id="Launch" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Launch Instance</button>
+                            <button id="Launch" onclick="launch()" type="submit" class="btn btn-primary" style="width: 150px;visibility: hidden">Launch Instance</button>
                         </div>
                     </div>
                 </div>
                 <input name="IdImage" id="IdImage" type="text" style="display: none">
+                <input name="IdAction" id="IdAction" type="text" style="display: none">
+                <input name="IdServer" id="IdServer" type="text" style="display: none">
+                <input name="IdOS" id="IdOS" type="text" style="display: none">
+                <input name="IdSSH" id="IdSSH" type="text" style="display: none">
+
                 <div class="card-body">
                     <table style="width: 100%">
                         <tr style="background-color: lightgray" align="center">
@@ -59,33 +66,20 @@
                             <td>SSH method</td>
                             <td>&emsp;</td>
                         </tr>
-                        <tr  align="center">
-                            <td><input name="chooseInstance" type="radio" onclick="choose('1')" value="Yes"/></td>
-                            <td>1</td>
-                            <td>Name</td>
-                            <td>Server</td>
-                            <td>OS base</td>
-                            <td>SSH method</td>
-                            <td>
-                                <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>
-                                </button>
-                            </td>
-                        </tr>
-
-                        <%--                        <c:forEach items="${Snapshots}" var="c">--%>
-                        <%--                            <tr align="center">--%>
-                        <%--                                <td><input name="chooseInstance" type="radio" onclick="choose(${c.id})" value="Yes"/></td>--%>
-                        <%--                                <td>${c.id}</td>--%>
-                        <%--                                <td>${c.nameSnapshot}</td>--%>
-                        <%--                                <td>${c.imageId}</td>--%>
-                        <%--                                <td>Server</td>--%>
-                        <%--                                <td>Hôm nay</td>--%>
-                        <%--                                <td>--%>
-                        <%--                                    <button type="submit" class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick(${c.id})"><b>Delete</b>--%>
-                        <%--                                    </button>--%>
-                        <%--                                </td>--%>
-                        <%--                            </tr>--%>
-                        <%--                        </c:forEach>--%>
+                        <c:forEach items="${images}" var="c">
+                            <tr  align="center">
+                                <td><input name="chooseInstance" type="radio" onclick="choose('${c.id}','${c.serverId}','${c.type}','${c.sshMethod}')" value="Yes"/></td>
+                                <td>${c.id}</td>
+                                <td>${c.nameImage}</td>
+                                <td>${c.IPSever}</td>
+                                <td>${c.OS}</td>
+                                <td>${c.SSHMethod}</td>
+                                <td>
+                                    <button class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick('${c.id}')" type="submit"><b>Delete</b>
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </table>
                 </div>
             </form>
@@ -94,11 +88,18 @@
 </div>
 <script>
     function deleteClick(id) {
-        document.getElementById("IdSnapshot").value = id;
+        document.getElementById("IdAction").value = 0;
+        document.getElementById("IdImage").value = id;
+    }
+    function launch(){
+        document.getElementById("IdAction").value = 1;
     }
 
-    function choose(n) {
-        document.getElementById("IdImage").value = n
+    function choose(idImage, idServer, idOS, idSSH) {
+        document.getElementById("IdImage").value = idImage
+        document.getElementById("IdServer").value = idServer
+        document.getElementById("IdOS").value = idOS
+        document.getElementById("IdSSH").value = idSSH
         document.getElementById("Launch").style.visibility = 'visible'
     }
 

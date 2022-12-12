@@ -2,8 +2,10 @@ package com.huicloud.dockerubuntuvirtual.controllers;
 
 import com.huicloud.dockerubuntuvirtual.models.Instance;
 
+import com.huicloud.dockerubuntuvirtual.models.Server;
 import com.huicloud.dockerubuntuvirtual.services.InstanceService;
 import com.huicloud.dockerubuntuvirtual.services.SSHKeyService;
+import com.huicloud.dockerubuntuvirtual.services.ServerServices;
 import com.huicloud.dockerubuntuvirtual.services.UserService;
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
 
@@ -40,6 +42,8 @@ public class SSHServlet extends HttpServlet {
                 }
                 break;
             case "/Create":
+                List<Server> list4 = ServerServices.findAll();
+                request.setAttribute("Servers", list4);
                 ServerUtils.foward("/viewMain/viewSsh/CreateSsh.jsp", request, response);
                 break;
             case "/ShowPrivateKey":
@@ -95,6 +99,9 @@ public class SSHServlet extends HttpServlet {
                 }
                 break;
             case "/Create":
+//                ID server mới lấy
+                int serverId =Integer.parseInt(request.getParameter("Server")) ;
+
                 ServletContext context = request.getServletContext();
                 String path = context.getRealPath("/");
                 System.out.print(path);

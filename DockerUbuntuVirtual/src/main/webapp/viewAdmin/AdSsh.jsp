@@ -51,7 +51,7 @@
       <div class="card-header"
            style=" display: flex; justify-content: space-between; border-style: none">
 
-        <h4>SSH Key</h4>
+        <h4>Manager SSH Key</h4>
 
         <div align="right">
 

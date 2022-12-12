@@ -1,9 +1,6 @@
 package com.huicloud.dockerubuntuvirtual.controllers;
 
-import com.huicloud.dockerubuntuvirtual.models.Instance;
-import com.huicloud.dockerubuntuvirtual.models.Network;
-import com.huicloud.dockerubuntuvirtual.models.Server;
-import com.huicloud.dockerubuntuvirtual.models.Snapshot;
+import com.huicloud.dockerubuntuvirtual.models.*;
 import com.huicloud.dockerubuntuvirtual.services.*;
 
 import com.huicloud.dockerubuntuvirtual.utils.ServerUtils;
@@ -12,6 +9,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "MainServlet", value = "/Main/*")
@@ -93,8 +91,13 @@ public class MainServlet extends HttpServlet {
             case "/SSH":
                 ServerUtils.foward("/viewMain/Ssh.jsp", request, response);
                 break;
+            case "/Server":
+                System.out.println("Hello");
+                break;
             default:
                 break;
+
+
         }
     }
 }

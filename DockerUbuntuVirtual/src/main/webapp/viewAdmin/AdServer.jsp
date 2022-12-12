@@ -31,33 +31,70 @@
   <div class="row">
     <jsp:include page="../partial/Left.jsp"></jsp:include>
     <div class="col-sm-10 m-0 p-0">
+      <form action="" method="post" style="width: 100%">
       <div class="card-header"
            style=" display: flex; justify-content: space-between; border-style: none">
         <div style="display: flex; justify-content: space-between">
-          <h4>Server</h4>
+          <h4>Manager Server</h4>
+        </div>
+        <div>
+          <button id="Create" onclick="Create()" type="button" class="btn btn-primary" style="width: 150px">Create Server</button>
         </div>
 
       </div>
 
       <div class="card-body">
-        <table style="width: 100%">
+        <table id="tableInfo" style="width: 100%">
           <tr style="background-color: lightgray" align="left">
             <td>ID Server</td>
             <td>IP Server</td>
             <td>State</td>
+            <td>&ensp;</td>
           </tr>
-
+          <input name="IdServer" id="IdServer" type="text" style="display: none">
+          <input name="IdAction" id="IdAction" type="text" style="display: none">
           <c:forEach items="${Servers}" var="c">
             <tr align="left">
               <td>${c.id}</td>
               <td>${c.ipServer}</td>
               <td> State </td>
+              <td><button  class="btn btn-outline-danger" style="border-style: none" onclick="deleteClick('${c.id}')" type="submit"><b>Delete</b>
+              </button></td>
             </tr>
           </c:forEach>
         </table>
+
+        <div id="tableCreateServer" style="display: none">
+          <div class="input-group flex-nowrap">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="addon-wrapping">ServerName</span>
+            </div>
+            <input name="ServerName" type="text" class="form-control" placeholder="ServerName"
+                   aria-label="ServerName"
+                   aria-describedby="addon-wrapping" required>
+          </div>
+          <br>
+          <div align="right">
+            <button id="btCreate" type="submit" class="btn btn-success">Create</button>
+          </div>
+        </div>
       </div>
+      </form>
     </div>
   </div>
 </div>
 </body>
+<script>
+    document.getElementById('Create').onclick =
+      function Create(){
+      document.getElementById('tableInfo').style.display = 'none'
+      document.getElementById('tableCreateServer').style.display = 'block'
+      document.getElementById('IdAction').value = 1
+    }
+
+    function deleteClick(id){
+    document.getElementById('IdServer').value = id
+    document.getElementById('IdAction').value = 0
+  }
+</script>
 </html>

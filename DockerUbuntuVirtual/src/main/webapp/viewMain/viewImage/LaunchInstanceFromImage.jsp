@@ -2,7 +2,9 @@
 <%@ page import="com.huicloud.dockerubuntuvirtual.models.Image" %>
 <%@ page import="com.huicloud.dockerubuntuvirtual.models.Server" %>
 <%@ page import="com.huicloud.dockerubuntuvirtual.models.SSHKey" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.models.Network" %>
 <%@ page import="com.huicloud.dockerubuntuvirtual.services.InstanceService" %>
+<%@ page import="com.huicloud.dockerubuntuvirtual.services.NetworkService" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -11,6 +13,7 @@
 <jsp:useBean id="temp" scope="request" type="com.huicloud.dockerubuntuvirtual.models.SSHKey"/>
 <jsp:useBean id="SSHKeys" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.SSHKey>"/>
 <jsp:useBean id="Networks" scope="request" type="java.util.List<com.huicloud.dockerubuntuvirtual.models.Network>"/>
+
 
 
 <!DOCTYPE html>
@@ -53,7 +56,7 @@
                         </div>
                         <input name="NameInstance" type="text" class="form-control" placeholder="NameInstance"
                                aria-label="NameInstance"
-                               aria-describedby="addon-wrapping">
+                               aria-describedby="addon-wrapping" required>
                     </div>
                     <br>
 
@@ -79,13 +82,13 @@
                         </div>
                         <div>
                             <input name="CPUS" type="text" class="form-control" placeholder="CPUS" aria-label="CPUS"
-                                   aria-describedby="basic-addon1">
+                                   aria-describedby="basic-addon1" required>
                             <br>
                         </div>
                         <div>
                             <input name="Memory" type="text" class="form-control" placeholder="Memory"
                                    aria-label="Memory"
-                                   aria-describedby="basic-addon1">
+                                   aria-describedby="basic-addon1" required>
                         </div>
 
                         <div>
@@ -148,24 +151,32 @@
                         </div>
 
                         <div>
-                            <input name="Network" id="Network" type="text" style="visibility: hidden">
-                            <h5>Network</h5>
+                            <input name="Server" id="Server" type="text" style="visibility: hidden" value="${server.id}">
+                            <h5>Server</h5>
                         </div>
 
-                        <div>
+                        <div style="display: flex">
                             <div class="input-group-append">
-                                <button id="btNetwork" class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                        data-toggle="dropdown" aria-expanded="false">Choose
+                                <button id="btServer" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                        data-toggle="dropdown" aria-expanded="false" disabled>${server.ipServer}
                                 </button>
-                                <div class="dropdown-menu">
-                                    <c:forEach items="${Networks}" var="c">
-
-                                        <a name="" class="dropdown-item"
-                                           onclick="Network('${c.id}','${c.nameNetwork}')">${c.nameNetwork}</a>
-
-                                    </c:forEach>
-                                </div>
                             </div>
+
+
+                        <input name="Network" id="Network" type="text" style="display: none">
+                        <div id="chooseNetwork" class="input-group-append" style="padding-left: 30px" >
+                            <button id="btNetwork" class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    data-toggle="dropdown" aria-expanded="false">Choose Network
+                            </button>
+                            <div class="dropdown-menu">
+                                <% for (Network n : NetworkService.findAllById((Integer) request.getSession().getAttribute("userId"))) {%>
+                                <% int tempp = request.getAttribute("Server") == null?1:(Integer)request.getAttribute("Server");%>
+                                <% if (n.getServerId() == tempp) %>
+                                <a  class="dropdown-item"
+                                    onclick="Network('<%=n.getId()%>','<%=n.getNameNetwork()%>')"><%=n.getNameNetwork()%></a>
+                                <% } %>
+                            </div>
+                        </div>
                         </div>
 
 
@@ -183,7 +194,7 @@
 
                             <a class="btn btn-outline-danger" href="${pageContext.request.contextPath}/Main/Instance"
                                role="button">Cancel</a>
-                            <button type="submit" class="btn btn-primary" style="width: 150px;">
+                            <button id="LaunchInstance" type="submit" class="btn btn-primary" style="width: 150px;">
                                 Launch Instance
                             </button>
 
@@ -195,7 +206,6 @@
 </div>
 </body>
 <script>
-
     function enable() {
         document.getElementById("terminate").value = "1"
         document.getElementById("ChooseTer").innerText = "Enable";
@@ -228,5 +238,32 @@
         document.getElementById("btSSHKeyList").innerText = name;
         document.getElementById("SSHKey").value = id;
     }
+
+    document.getElementById("LaunchInstance").addEventListener("click", function(event) {
+        if (document.getElementById("OS").value == "") {
+            alert("Please choose OS!")
+            event.preventDefault()
+            return;
+        }
+        if (document.getElementById("SSHKey").value == "") {
+            alert("Please choose SSHKey!")
+            event.preventDefault()
+            return;
+        }
+        if (document.getElementById("terminate").value == "") {
+            alert("Please choose Termination protection!")
+            event.preventDefault()
+            return;
+        }
+        if (document.getElementById("Server").value == "") {
+            alert("Please choose Server!")
+            event.preventDefault()
+            return;
+        }
+        if (document.getElementById("Network").value == "") {
+            alert("Please choose Network!")
+            event.preventDefault()
+        }
+    })
 </script>
 </html>

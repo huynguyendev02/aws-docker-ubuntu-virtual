@@ -40,7 +40,7 @@
         <div class="card-header"
              style=" display: flex; justify-content: space-between; border-style: none">
           <div style="display: flex; justify-content: space-between">
-            <h4>Instance</h4>
+            <h4>Manager Instance</h4>
           </div>
 
           <div style="width: 60%">
@@ -50,6 +50,9 @@
             <div style="width: 100%">
               <div class="dropdown" style="width: 100%" align="right">
 
+                <button id="btCreateImage" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b><i class="fa fa-windows" aria-hidden="true"></i>  Make Imange</b> </button>
+                <button id="btCreateSnap" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b><i class="fa fa-tag" aria-hidden="true"></i> Make Snapshot</b> </button>
+                </button>
                 <button id="action" type="button" data-toggle="dropdown"
                         class="btn btn-outline-dark dropdown-toggle" disabled>Actions
                 </button>

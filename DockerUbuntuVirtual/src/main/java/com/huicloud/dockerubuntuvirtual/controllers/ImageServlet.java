@@ -23,12 +23,12 @@ public class ImageServlet extends HttpServlet {
         }
         switch (url) {
             case "/":
+                List<Image> imageList =  ImageService.findAllByUserId((Integer) session.getAttribute("userId"));
+                request.setAttribute("images",imageList);
                 if (UserService.check() == 0){
                     ServerUtils.foward("/viewAdmin/AdImage.jsp", request, response);
                 }
                 else {
-                    List<Image> imageList =  ImageService.findAllByUserId((Integer) session.getAttribute("userId"));
-                    request.setAttribute("images",imageList);
                     ServerUtils.foward("/viewMain/Image.jsp", request, response);
                 }
                 break;
@@ -68,6 +68,9 @@ public class ImageServlet extends HttpServlet {
                     request.setAttribute("server", server);
                     request.setAttribute("os", os);
                     request.setAttribute("Networks", NetworkList);
+
+//                    checkSSH = 0: tức là dùng pass
+//                    checkSSH = 1: tức là dùng key
                     if (checkSSH.equals("0"))
                     {
                         SSHKey temp = new SSHKey(-1, "SSH Key fake", -1);
@@ -84,6 +87,8 @@ public class ImageServlet extends HttpServlet {
                         List<SSHKey> SSHList = SSHKeyService.findAllById((Integer) session.getAttribute("userId"));
                         request.setAttribute("SSHKeys", SSHList);
                     }
+
+
                     ServerUtils.foward("/viewMain/viewImage/LaunchInstanceFromImage.jsp", request, response);
                 }
                 break;
@@ -94,18 +99,22 @@ public class ImageServlet extends HttpServlet {
                 double mem =  Double.parseDouble(request.getParameter("Memory"));
                 String terminateState = request.getParameter("terminate");
 //                System.out.print(Integer.parseInt(request.getParameter("SSHKey")));
+
+//                sshId trả về -1 tức là dùng pass
+//                 sshId trả về số khác, tức là trả về id của sshkey
                 int sshId =Integer.parseInt(request.getParameter("SSHKey")) ;
-//                -1 tức là dùng pass
-//                 trả về số khác, tức là trả về id của sshkey
                 int netId  =Integer.parseInt(request.getParameter("Network"));
                 String userData  =request.getParameter("UserData");
+//                ID server mới lấy
+                int serverId =Integer.parseInt(request.getParameter("Server")) ;
 
                 System.out.println("Name: " + nameIns);
                 System.out.println("OS id: " + osId);
                 System.out.println("CPUS: " + cpus);
                 System.out.println("mem: " + mem);
-                System.out.println("termina: " + terminateState);
+                System.out.println("terminate: " + terminateState);
                 System.out.println( "ssh: " + sshId);
+                System.out.println("Server: " + serverId);
                 System.out.println("netID: " + netId);
                 System.out.println("UserData: " + userData);
 

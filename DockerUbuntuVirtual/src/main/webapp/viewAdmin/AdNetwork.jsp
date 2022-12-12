@@ -34,7 +34,7 @@
       <div class="card-header"
            style=" display: flex; justify-content: space-between; border-style: none">
         <div style="display: flex; justify-content: space-between">
-          <h4>Network</h4>
+          <h4>Manager Network</h4>
         </div>
         <div style="width: 60%">
           <div class="dropdown" style="width: 100%" align="right">

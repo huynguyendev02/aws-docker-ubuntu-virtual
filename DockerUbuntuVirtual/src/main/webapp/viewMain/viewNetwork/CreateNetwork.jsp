@@ -45,7 +45,7 @@
                             <span class="input-group-text" >Network name</span>
                         </div>
                         <input name="nameNetwork" type="text" class="form-control" placeholder="Network name" aria-label="Username"
-                               aria-describedby="addon-wrapping">
+                               aria-describedby="addon-wrapping" required>
                     </div>
                     <div>
                         <input name="ServerID" id="ServerID" type="text" style="visibility: hidden">
@@ -70,7 +70,7 @@
 
 
                             <a class="btn btn-outline-danger" href="${pageContext.request.contextPath}/Main/Network" role="button">Cancel</a>
-                            <button type="submit" class="btn btn-primary" style="width: 150px;">
+                            <button id="Create" type="submit" class="btn btn-primary" style="width: 150px;">
                                 Create
                             </button>
                         </div>
@@ -87,5 +87,12 @@
         document.getElementById("ServerID").value = id;
         document.getElementById("Choose").innerText = name;
     }
+    document.getElementById("Create").addEventListener("click", function(event) {
+        if (document.getElementById("ServerID").value == "") {
+            alert("Please choose Server!")
+            event.preventDefault()
+            return;
+        }
+    })
 </script>
 </html>

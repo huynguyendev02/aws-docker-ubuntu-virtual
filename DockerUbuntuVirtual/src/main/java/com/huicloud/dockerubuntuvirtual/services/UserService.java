@@ -56,6 +56,6 @@ public class UserService {
     }
     //    Trả về 0 nếu là Admin, trả về 1 nếu là User
     public static int check(){
-        return 1;
+        return 0;
     }
 }
