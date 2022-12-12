@@ -113,7 +113,7 @@ public class ImageServlet extends HttpServlet {
                 int osId =   Integer.parseInt(request.getParameter("OS")) ;
                 double cpus = Double.parseDouble(request.getParameter("CPUS"));
                 double mem =  Double.parseDouble(request.getParameter("Memory"));
-                String terminateState = request.getParameter("terminate");
+                int terminateState =Integer.parseInt( request.getParameter("terminate"));
 //                System.out.print(Integer.parseInt(request.getParameter("SSHKey")));
 
 //                sshId trả về -1 tức là dùng pass
@@ -124,7 +124,7 @@ public class ImageServlet extends HttpServlet {
 //                ID server mới lấy
                 int serverId =Integer.parseInt(request.getParameter("Server")) ;
 
-                InstanceService.createInstance(nameIns, cpus, mem,netId,(Integer) session.getAttribute("userId"),osId,sshId == -1 ? 0:sshId);
+                InstanceService.createInstance(nameIns, cpus, mem,netId,(Integer) session.getAttribute("userId"),osId,sshId == -1 ? 0:sshId, terminateState,userData);
 
 
                 System.out.println("Name: " + nameIns);

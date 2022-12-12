@@ -45,12 +45,14 @@
 
                     <div style="width: 60%">
                         <input name="State" id="ipState" type="text" style="display: none">
+                        <input name="idTerminate" id="idTerminate" type="text" style="display: none">
                         <input name="IdInstance" id="IdInstance" type="text" style="display: none">
+
                         <input name="IdAction" id="IdAction" type="text" style="display: none">
                         <div style="width: 100%">
                             <div class="dropdown" style="width: 100%" align="right">
 
-                                <button id="btCreateImage" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b><i class="fa fa-windows" aria-hidden="true"></i>  Make Imange</b> </button>
+                                <button id="btCreateImage" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b><i class="fa fa-windows" aria-hidden="true"></i>  Make Image</b> </button>
                                 <button id="btCreateSnap" type="button" class="btn btn-outline-primary" style="border-style: none" disabled> <b><i class="fa fa-tag" aria-hidden="true"></i> Make Snapshot</b> </button>
                                 </button>
                                 <button id="action" type="button" data-toggle="dropdown"
@@ -61,6 +63,7 @@
                                     <button id="start" class="dropdown-item">Start</button>
                                     <button id="stop" class="dropdown-item">Stop</button>
                                     <button id="terminate" class="dropdown-item">Terminate</button>
+                                    <button id="turnOffTerminate" class="dropdown-item">Turn Off protection</button>
                                 </div>
 
                                 <a id="Launch" class="btn btn-primary"
@@ -88,7 +91,7 @@
                         <c:forEach items="${instances}" var="c">
                             <tr align="center">
                                 <td><input name="hehe" type="radio"
-                                           onclick="choose(${c.id},'${c.nameInstance}','${c.serverIp()}')" value="Yes"/></td>
+                                           onclick="choose(${c.id},'${c.nameInstance}','${c.serverIp()}',${c.terminate})" value="Yes"/></td>
                                 <td>${c.id}</td>
                                 <td>${c.nameInstance.split("0")[1]}</td>
                                 <td id="state">${c.state}</td>
@@ -133,6 +136,7 @@
                         <div align="right">
                             <button type="submit" class="btn btn-success">Create</button>
                         </div>
+
                     </div>
                 </div>
             </form>
@@ -153,16 +157,34 @@
             document.getElementById("ipState").value = 0;
             document.getElementById("stop").setAttribute("type", "submit")
         }
+    document.getElementById("terminate").addEventListener('click', function clickTerminate(event) {
+        document.getElementById("IdAction").value = 3;
+        document.getElementById("ipState").value = 0;
+        if (document.getElementById("idTerminate").value == 1) {
+            event.preventDefault()
+            alert("Can't terminate this instance")
+            return
+        }
+        document.getElementById("terminate").setAttribute("type", "submit")
+    })
 
-    document.getElementById("terminate").onclick =
+    // document.getElementById("terminate").onclick =
+    //     function clickTerminate(event) {
+    //
+    //     }
+
+    document.getElementById("turnOffTerminate").onclick =
         function clickTerminate() {
-            document.getElementById("IdAction").value = 3;
+            document.getElementById("IdAction").value = 4;
             document.getElementById("ipState").value = 0;
-            document.getElementById("terminate").setAttribute("type", "submit")
+            document.getElementById("turnOffTerminate").setAttribute("type", "submit")
         }
 
-    function choose(id, instanceName, serverName) {
+    function choose(id, instanceName, serverName, terminate) {
         document.getElementById("IdInstance").value = id
+
+        document.getElementById("idTerminate").value = terminate
+
         document.getElementById("btCreateImage").disabled = false
         document.getElementById("btCreateSnap").disabled = false
         document.getElementById("action").disabled = false

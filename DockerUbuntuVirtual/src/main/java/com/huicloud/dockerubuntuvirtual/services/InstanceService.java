@@ -11,7 +11,7 @@ import org.sql2o.Connection;
 import java.util.List;
 
 public class InstanceService {
-    public static void createInstance(String nameInstance, double cpus, double memory, int networkId, int userId, int imageId, int keyId){
+    public static void createInstance(String nameInstance, double cpus, double memory, int networkId, int userId, int imageId, int keyId, int terminateState, String userData){
         Network net = NetworkService.findNetworkById(networkId);
         Server ser = ServerServices.findServerById(net.getServerId());
         Image image = ImageService.findImageById(imageId);
@@ -63,9 +63,10 @@ public class InstanceService {
                HostSSHUtils.executeCommand(commandCentosKey, ser.getId());
            HostSSHUtils.executeCommand("sudo docker cp /home/ubuntu/KEYSSH/"+UserService.getUsername(userId)+"/"+SSHKeyService.getNameById(keyId)+"pub.pem "+UserService.getUsername(userId) +"0"+nameInstance+":/home/sshuser/.ssh/authorized_keys",ser.getId());
        }
+       HostSSHUtils.executeCommand(userData,ser.getId());
 
-        String query2 = "insert into instance ( nameInstance, cpus, memory, port, networkId, userId, imageId, state, keyId  ) " +
-                "values ( :nameInstance, :cpus, :memory, :port, :networkId, :userId, :imageId, :state, :keyId )";
+        String query2 = "insert into instance ( nameInstance, cpus, memory, port, networkId, userId, imageId, state, keyId, terminate ) " +
+                "values ( :nameInstance, :cpus, :memory, :port, :networkId, :userId, :imageId, :state, :keyId, :terminate)";
         try (Connection con = ConnectionUtils.openConnection()){
             con.createQuery(query2,true)
                     .addParameter("nameInstance",UserService.getUsername(userId) +"0"+nameInstance)
@@ -77,6 +78,7 @@ public class InstanceService {
                     .addParameter("imageId",imageId)
                     .addParameter("state","Running")
                     .addParameter("keyId",keyId==0 ? null : keyId )
+                    .addParameter("terminate", terminateState)
                     .executeUpdate()
                     .getKey();
         }
@@ -101,6 +103,14 @@ public class InstanceService {
             con.createQuery(query1)
                     .addParameter("id",idInstance)
                     .addParameter("state", "Running")
+                    .executeUpdate();
+        }
+    }
+    public static void turnOffProtection(int idInstance){
+        String query = "update instance set terminate=0  where id = :idInstance";
+        try (Connection con = ConnectionUtils.openConnection()){
+            con.createQuery(query)
+                    .addParameter("idInstance", idInstance)
                     .executeUpdate();
         }
     }

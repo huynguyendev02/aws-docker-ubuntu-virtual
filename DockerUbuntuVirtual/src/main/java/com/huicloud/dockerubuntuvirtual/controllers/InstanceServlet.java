@@ -83,6 +83,8 @@ public class InstanceServlet extends HttpServlet {
                         InstanceService.stopIns(idInstance);
                     if (idAction==3)
                         InstanceService.terminateIns(idInstance);
+                    if (idAction==4)
+                        InstanceService.turnOffProtection(idInstance);
 
                     response.sendRedirect(request.getContextPath() + "/Main/Instance");
 
@@ -109,15 +111,15 @@ public class InstanceServlet extends HttpServlet {
                 int osId =   Integer.parseInt(request.getParameter("OS")) ;
                 double cpus = Double.parseDouble(request.getParameter("CPUS"));
                 double mem =  Double.parseDouble(request.getParameter("Memory"));
-                String terminateState = request.getParameter("terminate");
+                int terminateState = Integer.parseInt( request.getParameter("terminate"));
                 System.out.print(Integer.parseInt(request.getParameter("SSHKey")));
                 int sshId =Integer.parseInt(request.getParameter("SSHKey")) ;
                 int netId  =Integer.parseInt(request.getParameter("Network"));
-
+                String userData = request.getParameter("UserData");
 //                ID server mới lấy
 //                int serverId =Integer.parseInt(request.getParameter("Server")) ;
 
-                InstanceService.createInstance(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId);
+                InstanceService.createInstance(nameIns,cpus,mem,netId,(Integer) session.getAttribute("userId"),osId,sshId, terminateState, userData);
                 response.sendRedirect(request.getContextPath() + "/Main/Instance");
                 break;
             default:
