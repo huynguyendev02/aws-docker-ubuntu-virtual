@@ -9,6 +9,7 @@
   - [Công nghệ sử dụng](#công-nghệ-sử-dụng)
   - [Chức năng của ứng dụng](#chức-năng-của-ứng-dụng)
   - [Cài đặt ứng dụng](#cài-đặt-ứng-dụng)
+  - [Tài liệu tham khảo](#tài-liệu-tham-khảo)
 
 ## Các thành viên nhóm 02
 
