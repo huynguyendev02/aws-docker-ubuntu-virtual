@@ -193,7 +193,7 @@
     <form action="">
         <div class="con">
             <header class="head-form" style="width: 100%">
-                <h2 style="font-size: 40px">Wellcome to Hui Environment</h2>
+                <h2 style="font-size: 40px">Welcome to Hui Environment</h2>
                 <p>The Best Cloud service </p>
             </header>
             <br>
