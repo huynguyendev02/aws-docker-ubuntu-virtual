@@ -1,8 +1,8 @@
 # Đồ án môn học: Điện toán đám mây
 
 ## Đề tài: Sử dụng Docker để ảo hoá server Ubuntu
-
-## Table of content
+### Giảng viên hướng dẫn: TS. Huỳnh Xuân Phụng
+## Table of contents
 
 - [Đồ án môn học: Điện toán đám mây](#đồ-án-môn-học:-điện-toán-đám-mây)
   - [Các thành viên nhóm](#các-thành-viên-nhóm-02)
